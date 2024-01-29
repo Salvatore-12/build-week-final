@@ -1,4 +1,4 @@
-package Team3.buildweekfinal.exceptions;
+package Team3.buildweekfinal.Exceptions;
 
 import Team3.buildweekfinal.payloads.ErrorsDTO;
 import Team3.buildweekfinal.payloads.ErrorsPayloadWhitList;
@@ -16,18 +16,18 @@ import java.util.List;
 
 @RestControllerAdvice
 public class ExceptionsHandler {
-    @ExceptionHandler(BadRequestException.class)
+    @ExceptionHandler(Team3.buildweekfinal.exceptions.BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorsPayloadWhitList handleBadRequest(BadRequestException ex) {
+    public ErrorsPayloadWhitList handleBadRequest(Team3.buildweekfinal.exceptions.BadRequestException ex) {
         List<String> errorsMessages = new ArrayList<>();
         if(ex.getErrorList() != null)
             errorsMessages = ex.getErrorList().stream().map(errore -> errore.getDefaultMessage()).toList();
         return new ErrorsPayloadWhitList(ex.getMessage(), newDateAndHour(), errorsMessages);
     }
 
-    @ExceptionHandler(UnauthorizedException.class)
+    @ExceptionHandler(Team3.buildweekfinal.exceptions.UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED) // 401
-    public ErrorsDTO handleUnauthorized(UnauthorizedException e) {
+    public ErrorsDTO handleUnauthorized(Team3.buildweekfinal.exceptions.UnauthorizedException e) {
         return new ErrorsDTO(e.getMessage(),newDateAndHour());
     }
     @ExceptionHandler(AccessDeniedException.class)
@@ -36,9 +36,9 @@ public class ExceptionsHandler {
         return new ErrorsDTO("Access Denied", newDateAndHour());
     }
 
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler(Team3.buildweekfinal.exceptions.NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorsDTO handleNotFound(NotFoundException ex) {
+    public ErrorsDTO handleNotFound(Team3.buildweekfinal.exceptions.NotFoundException ex) {
         return new ErrorsDTO(ex.getMessage(),newDateAndHour());
     }
 
