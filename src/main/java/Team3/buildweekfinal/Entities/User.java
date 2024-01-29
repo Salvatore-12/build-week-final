@@ -33,8 +33,8 @@ public class User implements UserDetails
     private String avatar;
     @Enumerated(EnumType.STRING)
     private ROLE role;
-    @ManyToOne
-    private Client client;
+    @OneToMany(mappedBy = "user")
+    private List<Client> clients;
 
 
     @Override

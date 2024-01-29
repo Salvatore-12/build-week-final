@@ -22,9 +22,10 @@ public class Area
     private String area;
     private int provinceCode;
     private int provinceProgressive;
-    @ManyToOne
-    private Address address;
-    @OneToMany(mappedBy = "areas")
-    private List<Province> provinceList;
 
+    @OneToMany(mappedBy = "area")
+    private List<Address> addressList;
+
+    @ManyToOne
+    private Province province;
 }

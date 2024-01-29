@@ -27,5 +27,4 @@ public class Bill
     @ManyToOne
     private Client client;
 
-
 }

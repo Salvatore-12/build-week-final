@@ -22,6 +22,6 @@ public class Province
     private String province;
     private String provinceName;
 
-    @ManyToOne
-    private Area areas;
+    @OneToMany(mappedBy = "province")
+    private List<Area> areaList;
 }

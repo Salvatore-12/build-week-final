@@ -1,9 +1,6 @@
 package Team3.buildweekfinal.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +24,9 @@ public class Address
     private String city;
     private String cap;
 
-    @OneToMany(mappedBy = "address")
-    private List<Area> areas;
+    @ManyToOne
+    private Area area;
 
+    @OneToOne(mappedBy = "address")
+    private Client client;
 }

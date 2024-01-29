@@ -29,9 +29,11 @@ public class Client
     private Long number;
     @Enumerated(EnumType.STRING)
     private CTYPE ctype;
-    @OneToMany(mappedBy = "client")
-    private  List <User> user=new ArrayList<>();
+    @ManyToOne
+    private User user;
     @OneToOne
     private Address address;
+    @OneToMany(mappedBy = "client")
+    private List<Bill> bills =new ArrayList<>();
 
 }
