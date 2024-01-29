@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -23,6 +24,7 @@ public class Area
     private int provinceProgressive;
     @ManyToOne
     private Address address;
-    @OneToMany
-    private Province province;
+    @OneToMany(mappedBy = "areas")
+    private List<Province> provinceList;
+
 }
