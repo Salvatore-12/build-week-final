@@ -3,6 +3,7 @@ package Team3.buildweekfinal.Services;
 import Team3.buildweekfinal.Entities.CTYPE;
 import Team3.buildweekfinal.Entities.Client;
 import Team3.buildweekfinal.Payloads.ClientsDTO;
+import Team3.buildweekfinal.exceptions.NotFoundException;
 import Team3.buildweekfinal.repositories.ClientsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,8 +28,8 @@ public class ClientService
     }
     public Client findByID(UUID id)
     {
-        //inserire NotFoundException
-        return clientsDAO.findById(id).orElseThrow(()->new RuntimeException());
+
+        return clientsDAO.findById(id).orElseThrow(()->new NotFoundException(id));
     }
     public void findByIdAndDelete(UUID id)
     {
@@ -46,5 +47,9 @@ public class ClientService
         found.setNumber(body.number());
         found.setCtype(CTYPE.valueOf(body.ctype()));
         return clientsDAO.save(found);
+    }
+    public Client findByannualTurnOver(double annualTurnOver)
+    {
+        return clientsDAO.findByannualTurnOver(annualTurnOver).orElseThrow(()->new NotFoundException(String.valueOf(annualTurnOver)));
     }
 }

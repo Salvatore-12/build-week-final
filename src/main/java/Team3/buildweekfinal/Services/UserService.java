@@ -1,6 +1,7 @@
 package Team3.buildweekfinal.Services;
 import Team3.buildweekfinal.Payloads.UsersDTO;
 import Team3.buildweekfinal.Entities.User;
+import Team3.buildweekfinal.exceptions.NotFoundException;
 import Team3.buildweekfinal.repositories.UsersDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,8 +27,7 @@ public class UserService
     }
     public User findById(UUID id)
     {
-        //inserire NotFoundException
-        return usersDAO.findById(id).orElseThrow(()->new RuntimeException());
+       return usersDAO.findById(id).orElseThrow(()->new NotFoundException(id));
     }
     public void findByIdAndDelete(UUID id)
     {
@@ -43,5 +43,13 @@ public class UserService
         found.setUsername(body.username());
         found.setPassword(body.password());//inserire bcrypt
         return usersDAO.save(found);
+    }
+    public User findByEmail(String email)
+    {
+        return usersDAO.findByEmail(email).orElseThrow(()->new NotFoundException(email));
+    }
+    public User findByName(String name)
+    {
+        return usersDAO.findByName(name).orElseThrow(()->new NotFoundException(name));
     }
 }
