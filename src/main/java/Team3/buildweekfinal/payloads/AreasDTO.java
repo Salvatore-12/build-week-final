@@ -1,4 +1,4 @@
-package Team3.buildweekfinal.payloads;
+package Team3.buildweekfinal.Payloads;
 
 public record AreasDTO(String area,Integer pronvinceCode,Integer ProvinceProgressive) {
 }

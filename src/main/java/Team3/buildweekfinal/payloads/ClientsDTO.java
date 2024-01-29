@@ -1,4 +1,4 @@
-package Team3.buildweekfinal.payloads;
+package Team3.buildweekfinal.Payloads;
 
 import Team3.buildweekfinal.Entities.Address;
 import Team3.buildweekfinal.Entities.CTYPE;
