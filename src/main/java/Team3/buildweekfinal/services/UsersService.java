@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -17,6 +19,22 @@ public class UsersService
 {
     @Autowired
     private UsersDAO usersDAO;
+
+    public static Optional<User> getUserById(UUID idUser) {
+        return null;
+    }
+
+    public static User saveUser(User user) {
+        return null;
+    }
+
+    public static Optional<User> updateUser(UUID idUser, User updatedUser) {
+        return null;
+    }
+
+    public static Object deleteUser(UUID idUser) {
+        return null;
+    }
 
 
     public Page<User> getUsers(int page,int size,String orderBy)
@@ -51,5 +69,9 @@ public class UsersService
     public User findByName(String name)
     {
         return usersDAO.findByName(name).orElseThrow(()->new NotFoundException(name));
+    }
+
+    public List<User> getAllUser() {
+        return null;
     }
 }

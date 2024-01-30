@@ -1,11 +1,11 @@
-package Team3.buildweekfinal.controls;
+package Team3.buildweekfinal.controllers;
 
-import Team3.buildweekfinal.Entities.Client;
+import Team3.buildweekfinal.entities.Client;
+import Team3.buildweekfinal.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,7 +16,7 @@ public class ClientController {
 
     @Autowired
     public ClientController(ClientService clientService) {
-        this.clientService = ClientService;
+        this.clientService = clientService;
     }
 
     @GetMapping
@@ -48,5 +48,3 @@ public class ClientController {
         return ResponseEntity.noContent().build();
     }
 }
-
-
