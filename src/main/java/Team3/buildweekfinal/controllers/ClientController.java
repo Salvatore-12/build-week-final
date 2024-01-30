@@ -1,5 +1,7 @@
 package Team3.buildweekfinal.controllers;
 
+import Team3.buildweekfinal.entities.Bill;
+import Team3.buildweekfinal.entities.CTYPE;
 import Team3.buildweekfinal.entities.Client;
 import Team3.buildweekfinal.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @RestController
@@ -61,5 +64,31 @@ public class ClientController
     {
         clientService.findByIdAndDelete(currentClient.getPiva());
     }
+    @GetMapping("/findByClient")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Bill findByClient(@RequestParam String email){
+        return clientService.findByClient(email);
+    }
+    @GetMapping("/findByCtype")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Bill findByCtype(@RequestParam CTYPE ctype){
+        return clientService.findByCtype(ctype);
+    }
+
+    @GetMapping("/findByDate")
+    public Bill findByDate(@RequestParam LocalDate date){
+        return clientService.findByDate(date);
+    }
+
+    @GetMapping("/findByYear")
+    public Bill findByYear(@RequestParam int year){
+        return clientService.findByYear(year);
+    }
+
+    @GetMapping("/RangeOfAmmounts")
+    public Bill findByTotalIsLessThanMinAndIsGreaterThanMax(@RequestParam int min,int max,double total){
+        return clientService.findByRange(min,max,total);
+    }
+
 
 }
