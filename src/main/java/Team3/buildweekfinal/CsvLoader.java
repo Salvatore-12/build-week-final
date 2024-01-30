@@ -14,6 +14,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -98,8 +99,10 @@ public class CsvLoader implements CommandLineRunner {
                 if (province == null) {
                     i++;
                 } else {
+                    province.addArea(area);
                     area.setProvince(province);
                     areasDAO.save(area);
+                    provincesDAO.save(province);
                 }
             }
         }
