@@ -6,7 +6,9 @@ import Team3.buildweekfinal.entities.Client;
 import Team3.buildweekfinal.Payloads.ClientsDTO;
 import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.NotFoundException;
+import Team3.buildweekfinal.repositories.BillsDAO;
 import Team3.buildweekfinal.repositories.ClientsDAO;
+import Team3.buildweekfinal.repositories.UsersDAO;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,10 @@ public class ClientService
 {
     @Autowired
     private ClientsDAO clientsDAO;
+    @Autowired
+    private BillsDAO billsDAO;
+    @Autowired
+    private UsersDAO usersDAO;
     @Autowired
     private Cloudinary cloudinaryUploader;
 
@@ -81,22 +87,22 @@ public class ClientService
     }
     public User findByPartName(String name)
     {
-        return clientsDAO.findByNameContainingIgnoreCase(name).orElseThrow(()->new NotFoundException(name));
+        return usersDAO.findByNameContainingIgnoreCase(name).orElseThrow(()->new NotFoundException(name));
     }
    public Bill findByClient(String email){
-        return clientsDAO.findByClient(email).orElseThrow(()->new NotFoundException(email));
+        return billsDAO.findByClient(email).orElseThrow(()->new NotFoundException(email));
    }
    public Bill findByCtype(CTYPE ctype){
-        return clientsDAO.findByCtype(ctype).orElseThrow(()->new NotFoundException(String.valueOf(ctype)));
+        return billsDAO.findByCtype(ctype).orElseThrow(()->new NotFoundException(String.valueOf(ctype)));
    }
    public Bill findByDate(LocalDate date){
-        return clientsDAO.findByDate(date).orElseThrow(()->new NotFoundException(String.valueOf(date)));
+        return billsDAO.findByDate(date).orElseThrow(()->new NotFoundException(String.valueOf(date)));
    }
    public Bill findByYear(int year){
-        return clientsDAO.findByYear(year).orElseThrow(()->new NotFoundException(String.valueOf(year)));
+        return billsDAO.findByYear(year).orElseThrow(()->new NotFoundException(String.valueOf(year)));
    }
    public Bill findByRange(int min,int max,double total){
-        return clientsDAO.findByTotalIsLessThanMinAndIsGreaterThanMax(min,max,total).orElseThrow(()->
+        return billsDAO.findByTotalIsLessThanMinAndIsGreaterThanMax(min,max,total).orElseThrow(()->
         new NotFoundException("nessun importo nel range trovato!"));
    }
 }
