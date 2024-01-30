@@ -1,6 +1,6 @@
-package Team3.buildweekfinal.Services;
-import Team3.buildweekfinal.Payloads.UsersDTO;
-import Team3.buildweekfinal.Entities.User;
+package Team3.buildweekfinal.services;
+import Team3.buildweekfinal.payloads.UsersDTO;
+import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.NotFoundException;
 import Team3.buildweekfinal.repositories.UsersDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class UserService
+public class UsersService
 {
     @Autowired
     private UsersDAO usersDAO;

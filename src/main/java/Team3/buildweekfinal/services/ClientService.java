@@ -1,7 +1,7 @@
-package Team3.buildweekfinal.Services;
+package Team3.buildweekfinal.services;
 
-import Team3.buildweekfinal.Entities.CTYPE;
-import Team3.buildweekfinal.Entities.Client;
+import Team3.buildweekfinal.entities.CTYPE;
+import Team3.buildweekfinal.entities.Client;
 import Team3.buildweekfinal.Payloads.ClientsDTO;
 import Team3.buildweekfinal.exceptions.NotFoundException;
 import Team3.buildweekfinal.repositories.ClientsDAO;

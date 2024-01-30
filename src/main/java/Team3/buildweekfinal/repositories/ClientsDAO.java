@@ -1,6 +1,6 @@
 package Team3.buildweekfinal.repositories;
 
-import Team3.buildweekfinal.Entities.Client;
+import Team3.buildweekfinal.entities.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

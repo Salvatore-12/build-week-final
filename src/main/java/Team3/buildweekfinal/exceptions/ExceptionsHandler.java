@@ -1,4 +1,4 @@
-package Team3.buildweekfinal.Exceptions;
+package Team3.buildweekfinal.exceptions;
 
 import Team3.buildweekfinal.payloads.ErrorsDTO;
 import Team3.buildweekfinal.payloads.ErrorsPayloadWhitList;

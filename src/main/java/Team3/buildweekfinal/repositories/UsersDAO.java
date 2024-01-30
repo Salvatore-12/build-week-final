@@ -1,10 +1,9 @@
 package Team3.buildweekfinal.repositories;
 
-import Team3.buildweekfinal.Entities.User;
+import Team3.buildweekfinal.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 import java.util.UUID;
 
