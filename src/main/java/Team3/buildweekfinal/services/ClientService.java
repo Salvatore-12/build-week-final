@@ -3,6 +3,7 @@ package Team3.buildweekfinal.services;
 import Team3.buildweekfinal.entities.CTYPE;
 import Team3.buildweekfinal.entities.Client;
 import Team3.buildweekfinal.Payloads.ClientsDTO;
+import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.NotFoundException;
 import Team3.buildweekfinal.repositories.ClientsDAO;
 import com.cloudinary.Cloudinary;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -61,8 +64,21 @@ public class ClientService
                 .get("url");
         return url;
     }
-    public Client findByannualTurnOver(double annualTurnOver)
+    //****************************************************************QUERY****************************************************************
+    public Client findByAnnualTurnOver(double annualTurnOver)
     {
-        return clientsDAO.findByannualTurnOver(annualTurnOver).orElseThrow(()->new NotFoundException(String.valueOf(annualTurnOver)));
+        return clientsDAO.findByAnnualTurnOver(annualTurnOver).orElseThrow(()->new NotFoundException(String.valueOf(annualTurnOver)));
+    }
+    public Client findByInsertDate(LocalDate insertDate)
+    {
+        return clientsDAO.findByInsertDate(insertDate).orElseThrow(()->new NotFoundException(String.valueOf(insertDate)));
+    }
+    public Client findBylastCall(LocalDate lastCall)
+    {
+        return clientsDAO.findByLastCall(lastCall).orElseThrow(()->new NotFoundException(String.valueOf(lastCall)));
+    }
+    public User findByNameContainingIgnoreCase(String name)
+    {
+        return clientsDAO.findByNameContainingIgnoreCase(name).orElseThrow(()->new NotFoundException(name));
     }
 }
