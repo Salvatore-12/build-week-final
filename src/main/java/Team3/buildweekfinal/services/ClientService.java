@@ -76,8 +76,9 @@ public class ClientService
     public Client findBylastCall(LocalDate lastCall)
     {
         return clientsDAO.findByLastCall(lastCall).orElseThrow(()->new NotFoundException(String.valueOf(lastCall)));
+
     }
-    public User findByNameContainingIgnoreCase(String name)
+    public User findByPartName(String name)
     {
         return clientsDAO.findByNameContainingIgnoreCase(name).orElseThrow(()->new NotFoundException(name));
     }

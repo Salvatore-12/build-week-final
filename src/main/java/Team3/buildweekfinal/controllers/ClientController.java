@@ -61,5 +61,6 @@ public class ClientController
     {
         clientService.findByIdAndDelete(currentClient.getPiva());
     }
+    
 
 }
