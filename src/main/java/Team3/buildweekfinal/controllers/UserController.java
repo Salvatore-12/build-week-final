@@ -39,7 +39,7 @@ public class UserController {
         return currentUser;
     }
 
-    @PostMapping("/me")
+    @PutMapping("/me")
     @PreAuthorize("hasAuthority('USER')")
     public User updateUser(@AuthenticationPrincipal User currentUser, @RequestBody UpdateExistingUserDTO body) {
         return authService.updateUser(currentUser, body);
