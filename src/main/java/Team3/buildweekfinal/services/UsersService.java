@@ -26,23 +26,6 @@ public class UsersService
     @Autowired
     private Cloudinary cloudinaryUploader;
 
-    public static Optional<User> getUserById(UUID idUser) {
-        return null;
-    }
-
-    public static User saveUser(User user) {
-        return null;
-    }
-
-    public static Optional<User> updateUser(UUID idUser, User updatedUser) {
-        return null;
-    }
-
-    public static Object deleteUser(UUID idUser) {
-        return null;
-    }
-
-
     public Page<User> getUsers(int page,int size,String orderBy)
     {
         if(size>=100)size=100;
@@ -68,7 +51,8 @@ public class UsersService
         found.setPassword(body.password());//inserire bcrypt
         return usersDAO.save(found);
     }
-    public String uploadPicture(MultipartFile file) throws IOException {
+    public String uploadPicture(MultipartFile file) throws IOException
+    {
 
         String url = (String) cloudinaryUploader.uploader()
                 .upload(file.getBytes(), ObjectUtils.emptyMap())
@@ -85,7 +69,5 @@ public class UsersService
         return usersDAO.findByName(name).orElseThrow(()->new NotFoundException(name));
     }
 
-    public List<User> getAllUser() {
-        return null;
-    }
+
 }
