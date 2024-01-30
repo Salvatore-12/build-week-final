@@ -1,5 +1,6 @@
 package Team3.buildweekfinal.services;
 
+import Team3.buildweekfinal.entities.ROLE;
 import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.UnauthorizedException;
 import Team3.buildweekfinal.payloads.UserLoginDTO;
@@ -35,7 +36,9 @@ public class AuthService
         User newUser=new User();
         newUser.setName(body.name());
         newUser.setSurname(body.surname());
+        newUser.setRole(ROLE.USER);
         newUser.setEmail(body.email());
+        newUser.setAvatar(("htpps://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname()));
         newUser.setPassword(bcrypt.encode(body.password()));
         return usersDAO.save(newUser);
     }
