@@ -4,10 +4,9 @@ import Team3.buildweekfinal.entities.Province;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ProvincesDAO extends JpaRepository<Province,UUID> {
-
+public interface ProvincesDAO extends JpaRepository<Province,String> {
+    public Province findByProvinceName(String name);
 }

@@ -1,5 +1,6 @@
 package Team3.buildweekfinal.services;
 
+import Team3.buildweekfinal.entities.Bill;
 import Team3.buildweekfinal.entities.CTYPE;
 import Team3.buildweekfinal.entities.Client;
 import Team3.buildweekfinal.Payloads.ClientsDTO;
@@ -76,9 +77,26 @@ public class ClientService
     public Client findBylastCall(LocalDate lastCall)
     {
         return clientsDAO.findByLastCall(lastCall).orElseThrow(()->new NotFoundException(String.valueOf(lastCall)));
+
     }
-    public User findByNameContainingIgnoreCase(String name)
+    public User findByPartName(String name)
     {
         return clientsDAO.findByNameContainingIgnoreCase(name).orElseThrow(()->new NotFoundException(name));
     }
+   public Bill findByClient(String email){
+        return clientsDAO.findByClient(email).orElseThrow(()->new NotFoundException(email));
+   }
+   public Bill findByCtype(CTYPE ctype){
+        return clientsDAO.findByCtype(ctype).orElseThrow(()->new NotFoundException(String.valueOf(ctype)));
+   }
+   public Bill findByDate(LocalDate date){
+        return clientsDAO.findByDate(date).orElseThrow(()->new NotFoundException(String.valueOf(date)));
+   }
+   public Bill findByYear(int year){
+        return clientsDAO.findByYear(year).orElseThrow(()->new NotFoundException(String.valueOf(year)));
+   }
+   public Bill findByRange(int min,int max,double total){
+        return clientsDAO.findByTotalIsLessThanMinAndIsGreaterThanMax(min,max,total).orElseThrow(()->
+        new NotFoundException("nessun importo nel range trovato!"));
+   }
 }

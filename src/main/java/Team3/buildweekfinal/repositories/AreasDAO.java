@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @Repository
 
-public interface AreasDAO extends JpaRepository<Area,UUID> {
+public interface AreasDAO extends JpaRepository<Area,String> {
 }
