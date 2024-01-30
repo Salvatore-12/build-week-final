@@ -66,9 +66,6 @@ public class UsersService
     {
         return usersDAO.findByEmail(email).orElseThrow(()->new NotFoundException(email));
     }
-    public User findByName(String name)
-    {
-        return usersDAO.findByName(name).orElseThrow(()->new NotFoundException(name));
-    }
+
 
 }

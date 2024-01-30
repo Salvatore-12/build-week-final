@@ -20,12 +20,13 @@ public class Area
     @GeneratedValue
     private UUID idArea;
     private String area;
-    private int provinceCode;
-    private int provinceProgressive;
+    private String provinceCode;
+    private String provinceProgressive;
+    private String provinceName;
 
     @OneToMany(mappedBy = "area")
     private List<Address> addressList;
 
-    @ManyToOne
-    private Province province;
+//    @ManyToOne
+//    private Province province;
 }
