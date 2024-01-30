@@ -22,10 +22,8 @@ public class Address
     private int cv;
     private String city;
     private String cap;
-
     @ManyToOne
     private Area area;
-
-    @OneToMany(mappedBy = "address")
+    @ManyToOne
     private Client client;
 }
