@@ -1,52 +1,69 @@
 package Team3.buildweekfinal.controllers;
 
 import Team3.buildweekfinal.entities.User;
+import Team3.buildweekfinal.exceptions.BadRequestException;
+import Team3.buildweekfinal.payloads.UsersDTO;
+import Team3.buildweekfinal.payloads.UsersResponseDTO;
+import Team3.buildweekfinal.services.AuthService;
+import Team3.buildweekfinal.services.ClientService;
 import Team3.buildweekfinal.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.Optional;
+
 import java.util.UUID;
 
+
 @RestController
-@RequestMapping("/utente")
+@RequestMapping("/users")
 public class UserController {
-
-    private final UsersService usersService;
-
     @Autowired
-    public UserController(UsersService userService) {
-        this.usersService = userService;
+    private UsersService usersService;
+    @Autowired
+    private AuthService authService;
+    @Autowired
+    private ClientService clientService;
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    @GetMapping("/me")
+    public User getProfile(@AuthenticationPrincipal User currentUser){
+        return currentUser;
     }
 
     @GetMapping
-    public List<User> getUser() {
-        return usersService.getAllUser();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable UUID idUser) {
-        Optional<User> user = UsersService.getUserById(idUser);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Page<User> getUsers(@RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "10") int size,
+                               @RequestParam(defaultValue = "id") String orderBy) {
+        return usersService.getUsers(page, size, orderBy);
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User savedUser = UsersService.saveUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+    @ResponseStatus(HttpStatus.CREATED)
+    public UsersResponseDTO saveUser(@RequestBody @Validated UsersDTO body, BindingResult validation) {
+        if (validation.hasErrors()) {
+            throw new BadRequestException(validation.getAllErrors());
+        } else {
+            User newUser = authService.save(body);
+            return new UsersResponseDTO(newUser.getIdUser());
+        }
     }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable UUID idUser, @RequestBody User updatedUser) {
-        Optional<User> user = UsersService.updateUser(idUser, updatedUser);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public User findById(@PathVariable UUID id) {
+        return usersService.findById(id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID idUser) {
-        UsersService.deleteUser(idUser);
-        return ResponseEntity.noContent().build();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAnyAuthority('EVENT_MANAGER','USER')")
+    public void findByIdAndDelete(@PathVariable UUID id) {
+        usersService.findByIdAndDelete(id);
     }
+
 }
