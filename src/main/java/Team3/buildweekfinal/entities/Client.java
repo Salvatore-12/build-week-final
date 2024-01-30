@@ -31,8 +31,8 @@ public class Client
     private CTYPE ctype;
     @ManyToOne
     private User user;
-    @OneToOne
-    private Address address;
+    @ManyToOne
+    private List<Address> address=new ArrayList<>();
     @OneToMany(mappedBy = "client")
     private List<Bill> bills =new ArrayList<>();
 

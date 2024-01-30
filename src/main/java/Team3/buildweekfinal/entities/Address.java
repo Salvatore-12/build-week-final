@@ -26,6 +26,6 @@ public class Address
     @ManyToOne
     private Area area;
 
-    @OneToOne(mappedBy = "address")
+    @OneToMany(mappedBy = "address")
     private Client client;
 }
