@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -65,4 +66,12 @@ public class ClientService
     {
         return clientsDAO.findByannualTurnOver(annualTurnOver).orElseThrow(()->new NotFoundException(String.valueOf(annualTurnOver)));
     }
+    public  Client findByInsertData(LocalDate inserData){
+        return clientsDAO.orderByInsertDate(inserData).orElseThrow(()->new NotFoundException(String.valueOf(inserData)));
+    }
+    public  Client findByLastCall(LocalDate lastCall){
+        return clientsDAO.orderByLastCall(lastCall).orElseThrow(()->new NotFoundException(String.valueOf(lastCall)));
+    }
+
+
 }
