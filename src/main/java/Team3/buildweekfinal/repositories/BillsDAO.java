@@ -12,9 +12,5 @@ import java.util.UUID;
 
 @Repository
 public interface BillsDAO extends JpaRepository<Bill,UUID> {
-    Optional<Bill>findByClient(Client client);
-    Optional<Bill>findByCtype(CTYPE ctype);
-    Optional<Bill>findByDate(LocalDate date);
-    Optional<Bill>findByYear(LocalDate date);
-    Optional<Bill>findByTotalIsLessThanMinAndIsGreaterThanMax(int min ,int max,double total);
+
 }
