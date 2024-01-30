@@ -3,6 +3,7 @@ package Team3.buildweekfinal.services;
 import Team3.buildweekfinal.entities.ROLE;
 import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.UnauthorizedException;
+import Team3.buildweekfinal.payloads.UpdateExistingUserDTO;
 import Team3.buildweekfinal.payloads.UserLoginDTO;
 import Team3.buildweekfinal.payloads.UsersDTO;
 import Team3.buildweekfinal.exceptions.BadRequestException;
@@ -51,5 +52,24 @@ public class AuthService
         } else {
             throw new UnauthorizedException("Credenziali non valide!");
         }
+    }
+    public User updateUser(User currentUser, UpdateExistingUserDTO body) {
+        User found = usersService.findById(currentUser.getIdUser());
+        if (body.name() != null) {
+            found.setName(body.name());
+        }
+        if (body.surname() != null) {
+            found.setSurname(body.surname());
+        }
+        if (body.username() != null) {
+            found.setUsername(body.username());
+        }
+        if (body.email() != null) {
+            found.setEmail(body.email());
+        }
+        if (body.password() != null) {
+            found.setPassword(bcrypt.encode(body.password()));
+        }
+        return  usersDAO.save(found);
     }
 }

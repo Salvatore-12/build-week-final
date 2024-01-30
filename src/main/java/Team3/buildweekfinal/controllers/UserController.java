@@ -1,7 +1,9 @@
 package Team3.buildweekfinal.controllers;
 
+import Team3.buildweekfinal.entities.Bill;
 import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.BadRequestException;
+import Team3.buildweekfinal.payloads.UpdateExistingUserDTO;
 import Team3.buildweekfinal.payloads.UsersDTO;
 import Team3.buildweekfinal.payloads.UsersResponseDTO;
 import Team3.buildweekfinal.services.AuthService;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -33,6 +36,18 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @GetMapping("/me")
     public User getProfile(@AuthenticationPrincipal User currentUser){
+        return currentUser;
+    }
+
+    @PostMapping("/me")
+    @PreAuthorize("hasAuthority('USER')")
+    public User updateUser(@AuthenticationPrincipal User currentUser, @RequestBody UpdateExistingUserDTO body) {
+        return authService.updateUser(currentUser, body);
+    }
+    @GetMapping("/me/{bills}")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public List<Bill> getAllBills(@AuthenticationPrincipal User currentUser){
+
         return currentUser;
     }
 
@@ -63,12 +78,13 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAnyAuthority('EVENT_MANAGER','USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public void findByIdAndDelete(@PathVariable UUID id) {
         usersService.findByIdAndDelete(id);
     }
 
     @PostMapping("/{userId}/upload")
+    @PreAuthorize("hasAuthority('USER')")
     public String uploadAvatar(@RequestParam("avatar") MultipartFile file, @PathVariable UUID userId) throws IOException {
         return usersService.uploadPicture(file);
     }
