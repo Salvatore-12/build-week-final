@@ -3,6 +3,7 @@ package Team3.buildweekfinal.controllers;
 import Team3.buildweekfinal.entities.Bill;
 import Team3.buildweekfinal.entities.CTYPE;
 import Team3.buildweekfinal.entities.Client;
+import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -63,6 +64,26 @@ public class ClientController
     public void deleteClient(@AuthenticationPrincipal Client currentClient)
     {
         clientService.findByIdAndDelete(currentClient.getPiva());
+    }
+    @GetMapping("/findByAnnualTurnOver")
+    public Client findByAnnualTurnOver(@RequestParam double annualTurnOver)
+    {
+        return clientService.findByAnnualTurnOver(annualTurnOver);
+    }
+    @GetMapping("/findByInsertDate")
+    public Client findByInsertDate(@RequestParam LocalDate insertDate)
+    {
+        return clientService.findByInsertDate(insertDate);
+    }
+    @GetMapping("/findBylastCall")
+    public  Client findBylastCall(@RequestParam LocalDate lastCall)
+    {
+        return clientService.findBylastCall(lastCall);
+    }
+    @GetMapping("/findByPartName")
+    public User findByPartName(@RequestParam  String name)
+    {
+        return clientService.findByPartName(name);
     }
 
     @GetMapping("/findByClient")
