@@ -1,4 +1,4 @@
-package Team3.buildweekfinal.Entities;
+package Team3.buildweekfinal.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,8 +31,8 @@ public class Client
     private CTYPE ctype;
     @ManyToOne
     private User user;
-    @OneToOne
-    private Address address;
+    @OneToMany(mappedBy = "client")
+    private List<Address> address=new ArrayList<>();
     @OneToMany(mappedBy = "client")
     private List<Bill> bills =new ArrayList<>();
 

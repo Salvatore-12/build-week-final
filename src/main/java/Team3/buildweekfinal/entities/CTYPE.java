@@ -1,4 +1,4 @@
-package Team3.buildweekfinal.Entities;
+package Team3.buildweekfinal.entities;
 
 public enum CTYPE
 {

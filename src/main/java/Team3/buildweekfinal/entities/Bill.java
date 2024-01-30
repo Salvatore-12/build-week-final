@@ -1,4 +1,4 @@
-package Team3.buildweekfinal.Entities;
+package Team3.buildweekfinal.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -14,14 +14,15 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Province
+public class Bill
 {
     @Id
     @GeneratedValue
-    private UUID idRegistryOffice;
-    private String province;
-    private String provinceName;
+    private UUID idBill;
+    private LocalDate date;
+    private double total;
+    private int billNumber;
+    @ManyToOne
+    private Client client;
 
-    @OneToMany(mappedBy = "province")
-    private List<Area> areaList;
 }

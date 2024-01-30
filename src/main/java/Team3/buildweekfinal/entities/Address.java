@@ -1,4 +1,4 @@
-package Team3.buildweekfinal.Entities;
+package Team3.buildweekfinal.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -23,10 +22,8 @@ public class Address
     private int cv;
     private String city;
     private String cap;
-
     @ManyToOne
     private Area area;
-
-    @OneToOne(mappedBy = "address")
+    @ManyToOne
     private Client client;
 }

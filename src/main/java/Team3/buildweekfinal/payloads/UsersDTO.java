@@ -5,15 +5,18 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 public record UsersDTO(
-        @NotEmpty(message="iserisci il tuo nome")
+        @NotEmpty(message = "Il nome è un campo obbligatorio")
+        @Size(min = 3, max = 30, message = "Il nome deve essere compreso tra 3 e 30 caratteri")
         String name,
-        @NotEmpty(message = "inserisci il tuo surname")
+        @NotEmpty(message = "Il cognome è un campo obbligatorio")
+        @Size(min = 3, max = 30, message = "Il cognome deve essere compreso tra 3 e 30 caratteri")
         String surname,
         @NotEmpty(message = "inserisci il tuo username")
         String username,
-        @Email(message = "campo email obbligatorio")
+        @Email(message = "L'indirizzo inserito non è un indirizzo valido")
+        @NotEmpty(message = "La mail è un campo obbligatorio!")
         String email,
-        @NotEmpty(message = "campo password obbligatorio")
-        @Size(min=4,max=30)
+        @NotEmpty(message = "La password è un campo obbligatorio")
+        @Size(min = 4, message = "La password deve avere minimo 4 caratteri")
         String password) {
 }
