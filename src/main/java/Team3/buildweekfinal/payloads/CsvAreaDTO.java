@@ -14,5 +14,5 @@ public class CsvAreaDTO {
     @CsvBindByPosition(position = 2)
     private String denominazioneInItaliano;
     @CsvBindByPosition(position = 3)
-    private String province;
+    private String provinceName;
 }
