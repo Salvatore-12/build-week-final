@@ -2,7 +2,7 @@ package Team3.buildweekfinal.services;
 
 import Team3.buildweekfinal.entities.CTYPE;
 import Team3.buildweekfinal.entities.Client;
-import Team3.buildweekfinal.Payloads.ClientsDTO;
+import Team3.buildweekfinal.payloads.ClientsDTO;
 import Team3.buildweekfinal.exceptions.NotFoundException;
 import Team3.buildweekfinal.repositories.ClientsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
