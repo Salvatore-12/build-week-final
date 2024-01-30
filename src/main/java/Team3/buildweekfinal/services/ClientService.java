@@ -5,13 +5,17 @@ import Team3.buildweekfinal.entities.Client;
 import Team3.buildweekfinal.Payloads.ClientsDTO;
 import Team3.buildweekfinal.exceptions.NotFoundException;
 import Team3.buildweekfinal.repositories.ClientsDAO;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @Service
@@ -19,6 +23,8 @@ public class ClientService
 {
     @Autowired
     private ClientsDAO clientsDAO;
+    @Autowired
+    private Cloudinary cloudinaryUploader;
 
     public Page<Client> getClients(int page, int size, String orderBy)
     {
@@ -47,6 +53,13 @@ public class ClientService
         found.setNumber(body.number());
         found.setCtype(CTYPE.valueOf(body.ctype()));
         return clientsDAO.save(found);
+    }
+    public String uploadPicture(MultipartFile file) throws IOException {
+
+        String url = (String) cloudinaryUploader.uploader()
+                .upload(file.getBytes(), ObjectUtils.emptyMap())
+                .get("url");
+        return url;
     }
     public Client findByannualTurnOver(double annualTurnOver)
     {
