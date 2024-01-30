@@ -21,7 +21,8 @@ public class Province
     private UUID idRegistryOffice;
     private String province;
     private String provinceName;
+    private String region;
 
-    @OneToMany(mappedBy = "province")
-    private List<Area> areaList;
+//    @OneToMany(mappedBy = "province")
+//    private List<Area> areaList;
 }
