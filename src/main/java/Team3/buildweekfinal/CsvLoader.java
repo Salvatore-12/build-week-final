@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Scanner;
 
@@ -32,13 +33,13 @@ public class CsvLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Scanner scanner = new Scanner(System.in);
         boolean errors = false;
-        do{
+        do {
             System.out.println("Vuoi caricare i file 'province-italiane.csv' e 'comuni-italiani.csv'? (y/n)");
             String choice = scanner.nextLine();
             switch (choice.toLowerCase()) {
                 case "y" -> {
-                    saveAllAreas();
                     saveAllProvinces();
+                    saveAllAreas();
                     errors = false;
                 }
                 case "n" -> errors = false;
@@ -47,7 +48,7 @@ public class CsvLoader implements CommandLineRunner {
                     errors = true;
                 }
             }
-        }while(errors);
+        } while (errors);
     }
 
     public void saveAllProvinces() throws FileNotFoundException {
@@ -60,15 +61,15 @@ public class CsvLoader implements CommandLineRunner {
 
         csvProvinceDTOS.forEach(csvProvinceDTO -> {
             Province province = new Province();
-            province.setProvince(csvProvinceDTO.getSigla());
+            province.setInitials(csvProvinceDTO.getSigla());
             province.setProvinceName(csvProvinceDTO.getProvincia());
             province.setRegion(csvProvinceDTO.getRegione());
 
             provincesDAO.save(province);
         });
-
     }
-    public void saveAllAreas() throws FileNotFoundException{
+
+    public void saveAllAreas() throws Exception {
         FileReader fileReader = new FileReader("src/main/resources/comuni-italiani.csv");
         List<CsvAreaDTO> csvAreaDTOS = new CsvToBeanBuilder<CsvAreaDTO>(fileReader)
                 .withType(CsvAreaDTO.class)
@@ -76,14 +77,32 @@ public class CsvLoader implements CommandLineRunner {
                 .build()
                 .parse();
 
-        csvAreaDTOS.forEach(csvAreaDTO -> {
-            Area area = new Area();
-            area.setArea(csvAreaDTO.getDenominazioneInItaliano());
-            area.setProvinceName(csvAreaDTO.getProvince());
-            area.setProvinceCode(csvAreaDTO.getCodiceProvincia());
-            area.setProvinceProgressive(csvAreaDTO.getProgressivoComune());
+        int i = 0;
 
-            areasDAO.save(area);
-        });
+        for (CsvAreaDTO csvAreaDTO : csvAreaDTOS) {
+
+            Area area = new Area();
+            area.setItalianName(csvAreaDTO.getDenominazioneInItaliano());
+            area.setProgressiveArea(csvAreaDTO.getProgressivoComune());
+            area.setProvinceCode(csvAreaDTO.getCodiceProvincia());
+
+            if (!(csvAreaDTO.getProvinceName() == null)) {
+                String[] nameSplit = csvAreaDTO.getProvinceName().split(" ");
+                String newName = csvAreaDTO.getProvinceName();
+
+                if (nameSplit.length > 0) {
+                    newName = String.join("-", nameSplit);
+                }
+                Province province = provincesDAO.findByProvinceName(newName);
+                //questo if è solo per debug
+                if (province == null) {
+                    i++;
+                } else {
+                    area.setProvince(province);
+                    areasDAO.save(area);
+                }
+            }
+        }
+        System.out.println(i);
     }
 }

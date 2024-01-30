@@ -17,16 +17,13 @@ import java.util.UUID;
 public class Area
 {
     @Id
-    @GeneratedValue
-    private UUID idArea;
-    private String area;
+    private String italianName;
     private String provinceCode;
-    private String provinceProgressive;
-    private String provinceName;
+    private String progressiveArea;
 
     @OneToMany(mappedBy = "area")
     private List<Address> addressList;
 
-//    @ManyToOne
-//    private Province province;
+    @ManyToOne
+    private Province province;
 }
