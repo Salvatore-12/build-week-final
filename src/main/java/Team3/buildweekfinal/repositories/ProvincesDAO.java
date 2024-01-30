@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface ProvincesDAO extends JpaRepository<Province,UUID> {
+public interface ProvincesDAO extends JpaRepository<Province,String> {
+    public Province findByProvinceName(String name);
 }
