@@ -86,6 +86,7 @@ public class ClientController
         return clientService.findByPartName(name);
     }
 
+/*
     @GetMapping("/findByClient")
     @PreAuthorize("hasAuthority('ADMIN')")
     public Bill findByClient(@RequestParam String email){
@@ -111,6 +112,7 @@ public class ClientController
     public Bill findByTotalIsLessThanMinAndIsGreaterThanMax(@RequestParam int min,int max,double total){
         return clientService.findByRange(min,max,total);
     }
+*/
 
 
 }

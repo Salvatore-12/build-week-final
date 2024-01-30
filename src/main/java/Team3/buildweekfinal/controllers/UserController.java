@@ -44,12 +44,12 @@ public class UserController {
     public User updateUser(@AuthenticationPrincipal User currentUser, @RequestBody UpdateExistingUserDTO body) {
         return authService.updateUser(currentUser, body);
     }
-    @GetMapping("/me/{bills}")
-    @PreAuthorize("hasAnyAuthority('USER')")
-    public List<Bill> getAllBills(@AuthenticationPrincipal User currentUser){
-
-        return currentUser;
-    }
+//    @GetMapping("/me/{bills}")
+//    @PreAuthorize("hasAnyAuthority('USER')")
+//    public List<Bill> getAllBills(@AuthenticationPrincipal User currentUser){
+//
+//        return currentUser;
+//    }
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")

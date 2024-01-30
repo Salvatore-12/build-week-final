@@ -89,7 +89,7 @@ public class ClientService
     {
         return usersDAO.findByNameContainingIgnoreCase(name).orElseThrow(()->new NotFoundException(name));
     }
-   public Bill findByClient(String email){
+/*   public Bill findByClient(String email){
         return billsDAO.findByClient(email).orElseThrow(()->new NotFoundException(email));
    }
    public Bill findByCtype(CTYPE ctype){
@@ -104,5 +104,5 @@ public class ClientService
    public Bill findByRange(int min,int max,double total){
         return billsDAO.findByTotalIsLessThanMinAndIsGreaterThanMax(min,max,total).orElseThrow(()->
         new NotFoundException("nessun importo nel range trovato!"));
-   }
+   }*/
 }
