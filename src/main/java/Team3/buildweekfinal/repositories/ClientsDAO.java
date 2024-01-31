@@ -17,7 +17,8 @@ public interface ClientsDAO extends JpaRepository<Client,UUID>
     Optional<Client>findByAnnualTurnOver(double annualTurnOver);
     Optional<Client> findByInsertDate(LocalDate insertDate);
     Optional<Client> findByLastCall(LocalDate lastCall);
-
+    Optional<Bill> findByEmail(String email);
+    Optional<Bill> findByCtype(CTYPE ctype);
 
 
 }

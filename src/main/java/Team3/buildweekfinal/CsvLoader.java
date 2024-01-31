@@ -8,6 +8,7 @@ import Team3.buildweekfinal.repositories.AreasDAO;
 import Team3.buildweekfinal.repositories.ProvincesDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -22,6 +23,7 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 @Component
+@Order(1)
 public class CsvLoader implements CommandLineRunner {
     @Autowired
     private ProvincesDAO provincesDAO;
