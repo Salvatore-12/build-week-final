@@ -1,8 +1,13 @@
 package Team3.buildweekfinal;
 
+import Team3.buildweekfinal.entities.Address;
+import Team3.buildweekfinal.entities.Area;
 import Team3.buildweekfinal.entities.ROLE;
 import Team3.buildweekfinal.entities.User;
+import Team3.buildweekfinal.repositories.AddressDAO;
+import Team3.buildweekfinal.repositories.AreasDAO;
 import Team3.buildweekfinal.repositories.UsersDAO;
+import Team3.buildweekfinal.services.AddressService;
 import Team3.buildweekfinal.services.AuthService;
 import Team3.buildweekfinal.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +17,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import com.github.javafaker.Faker;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.Scanner;
 
 @Component
 @Order(2)
 public class Runner implements CommandLineRunner {
+    @Autowired
+    private AreasDAO areasDAO;
     @Autowired
     private PasswordEncoder bcrypt;
     @Autowired
@@ -27,6 +36,10 @@ public class Runner implements CommandLineRunner {
     private AuthService authService;
     @Autowired
     private UsersDAO usersDAO;
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private AddressDAO addressDAO;
     Faker faker = new Faker(new Locale("it"));
 
     @Override
@@ -41,6 +54,7 @@ public class Runner implements CommandLineRunner {
                 case "y" -> {
                     createAdmins();
                     createUsers();
+                    createAddresses();
                     errors = false;
                 }
                 case "n" -> errors = false;
@@ -72,22 +86,48 @@ public class Runner implements CommandLineRunner {
 
     public void createUsers() {
         for (int i = 0; i < 30; i++) {
-        String name = faker.funnyName().name();
-        String surname = faker.name().lastName();
-        String username = faker.name().username();
-        String email = faker.internet().emailAddress();
-        String password = bcrypt.encode(faker.internet().password());
-        User user = new User();
-        user.setName(name);
-        user.setSurname(surname);
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setRole(ROLE.USER);
-        user.setAvatar("htpps://ui-avatars.com/api/?name=" + name + "+" + surname);
-        user.setPassword(password);
-        usersDAO.save(user);
+            String name = faker.funnyName().name();
+            String surname = faker.name().lastName();
+            String username = faker.name().username();
+            String email = faker.internet().emailAddress();
+            String password = bcrypt.encode(faker.internet().password());
+            User user = new User();
+            user.setName(name);
+            user.setSurname(surname);
+            user.setUsername(username);
+            user.setEmail(email);
+            user.setRole(ROLE.USER);
+            user.setAvatar("htpps://ui-avatars.com/api/?name=" + name + "+" + surname);
+            user.setPassword(password);
+            usersDAO.save(user);
         }
     }
 
+    public void createAddresses() {
+        for (int i = 0; i < 30; i++) {
+            String street = faker.address().streetName();
+            Integer cv = Integer.parseInt(faker.address().buildingNumber());
+            Area area = getRandomArea();
+            String cap = area.getProvinceCode();
+            Address address = new Address();
+            address.setAddress(street);
+            address.setCv(cv);
+            address.setCap(cap);
+            address.setCity(area.getProvince().getProvinceName());
+            address.setArea(area);
+            addressDAO.save(address);
+        }
+    }
+
+    private Area getRandomArea() {
+        List<Area> areas = areasDAO.findAll();
+        if (areas.isEmpty()) {
+            throw new IllegalStateException(
+                    "Comuni non trovati.");
+        }
+        Random random = new Random();
+        int randomIndex = random.nextInt(areas.size());
+        return areas.get(randomIndex);
+    }
 
 }
