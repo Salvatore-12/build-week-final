@@ -89,20 +89,24 @@ public class ClientService
     {
         return usersDAO.findByNameContainingIgnoreCase(name).orElseThrow(()->new NotFoundException(name));
     }
-/*   public Bill findByClient(String email){
-        return billsDAO.findByClient(email).orElseThrow(()->new NotFoundException(email));
+   public Bill findByEmail(String email)
+   {
+       return clientsDAO.findByEmail(email).orElseThrow(()->new NotFoundException(email));
    }
-   public Bill findByCtype(CTYPE ctype){
-        return billsDAO.findByCtype(ctype).orElseThrow(()->new NotFoundException(String.valueOf(ctype)));
+   public Bill findByCtype(CTYPE ctype)
+   {
+       return clientsDAO.findByCtype(ctype).orElseThrow(()->new NotFoundException(String.valueOf(ctype)));
    }
-   public Bill findByDate(LocalDate date){
+    public Bill findBydate(LocalDate date)
+    {
         return billsDAO.findByDate(date).orElseThrow(()->new NotFoundException(String.valueOf(date)));
-   }
-   public Bill findByYear(int year){
-        return billsDAO.findByYear(year).orElseThrow(()->new NotFoundException(String.valueOf(year)));
-   }
-   public Bill findByRange(int min,int max,double total){
-        return billsDAO.findByTotalIsLessThanMinAndIsGreaterThanMax(min,max,total).orElseThrow(()->
-        new NotFoundException("nessun importo nel range trovato!"));
-   }*/
+    }
+    public Bill findByYear(int year)
+    {
+        return billsDAO.filterByYear(year).orElseThrow(()->new NotFoundException(String.valueOf(year)));
+    }
+    public Bill filterBytotal(double minAmount,double maxAmount)
+    {
+        return billsDAO.filterBytotal(minAmount,maxAmount).orElseThrow(()->new NotFoundException("fatture non trovate"));
+    }
 }
