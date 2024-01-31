@@ -4,12 +4,16 @@ import Team3.buildweekfinal.entities.Bill;
 import Team3.buildweekfinal.entities.CTYPE;
 import Team3.buildweekfinal.entities.Client;
 import Team3.buildweekfinal.entities.User;
+import Team3.buildweekfinal.exceptions.BadRequestException;
+import Team3.buildweekfinal.payloads.BillDTO;
+import Team3.buildweekfinal.Payloads.ClientsDTO;
 import Team3.buildweekfinal.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -29,6 +33,17 @@ public class ClientController
     {
         return clientService.getClients(page,size,orderBy);
     }
+    @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Client saveClient(@RequestParam UUID idBill,@RequestParam UUID idUser,@RequestParam UUID idAddress,@RequestBody ClientsDTO body,BindingResult validation){
+        if (validation.hasErrors()) {
+            throw new BadRequestException(validation.getAllErrors());
+        }else {
+            return clientService.save(idBill,idUser,idAddress,body);
+        }
+    }
+
     @GetMapping("/{piva}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -36,6 +51,7 @@ public class ClientController
     {
         return clientService.findByID(id);
     }
+
     @PutMapping("/{piva}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -55,6 +71,7 @@ public class ClientController
     {
         return clientService.findByID(currentClient.getPiva());
     }
+
     @PutMapping("/me")
     public Client modifyClient(@AuthenticationPrincipal Client currentClient, Team3.buildweekfinal.Payloads.ClientsDTO modifyClientPayload)
     {

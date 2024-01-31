@@ -110,13 +110,12 @@ public class Runner implements CommandLineRunner {
             Integer cv = Integer.parseInt(faker.address().buildingNumber());
             Area area = getRandomArea();
             String cap = area.getProvinceCode();
-            Address address = new Address();
-            address.setAddress(street);
-            address.setCv(cv);
-            address.setCap(cap);
-            address.setCity(area.getProvince().getProvinceName());
-            address.setArea(area);
-            addressDAO.save(address);
+            addressDAO.save(Address.builder()
+                    .address(street)
+                    .cv(cv)
+                    .cap(cap)
+                    .city(area.getProvince().getProvinceName())
+                    .area(area).build());
         }
     }
 
