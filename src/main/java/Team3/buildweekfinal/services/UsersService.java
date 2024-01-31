@@ -53,12 +53,15 @@ public class UsersService
         found.setPassword(body.password());//inserire bcrypt
         return usersDAO.save(found);
     }
-    public String uploadPicture(MultipartFile file) throws IOException
+    public String uploadPicture(MultipartFile file, UUID userId) throws IOException
     {
 
         String url = (String) cloudinaryUploader.uploader()
                 .upload(file.getBytes(), ObjectUtils.emptyMap())
                 .get("url");
+        User found = this.findById(userId);
+        found.setAvatar(url);
+        usersDAO.save(found);
         return url;
     }
 
