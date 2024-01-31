@@ -36,6 +36,7 @@ public class ClientController
     {
         return clientService.findByID(id);
     }
+
     @PutMapping("/{piva}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -55,6 +56,7 @@ public class ClientController
     {
         return clientService.findByID(currentClient.getPiva());
     }
+
     @PutMapping("/me")
     public Client modifyClient(@AuthenticationPrincipal Client currentClient, Team3.buildweekfinal.Payloads.ClientsDTO modifyClientPayload)
     {

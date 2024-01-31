@@ -37,12 +37,18 @@ public class BillController {
     }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Bill saveBill(@RequestBody BillDTO body,@PathVariable UUID id, BindingResult validation){
+    public Bill saveBill(@RequestBody BillDTO body,@PathVariable UUID id, BindingResult validation)
+    {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors());
         }else {
-            return billService.findByIdAndUpdate(id,body);
+            return billService.save(body,id);
         }
+    }
+    @PutMapping
+    public Bill FindByIdAndUpdate(@PathVariable UUID id,@RequestBody BillDTO billDTOPayloads)
+    {
+        return billService.findByIdAndUpdate(id,billDTOPayloads);
     }
 
     @DeleteMapping("/{id}")
