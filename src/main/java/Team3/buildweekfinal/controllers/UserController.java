@@ -31,16 +31,20 @@ public class UserController {
     private AuthService authService;
     @Autowired
     private ClientService clientService;
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+
     @GetMapping("/me")
     public User getProfile(@AuthenticationPrincipal User currentUser){
         return currentUser;
     }
 
     @PutMapping("/me")
-    @PreAuthorize("hasAuthority('USER')")
     public User updateUser(@AuthenticationPrincipal User currentUser, @RequestBody UpdateExistingUserDTO body) {
         return authService.updateUser(currentUser, body);
+    }
+
+    @PostMapping("/me/upload")
+    public String uploadAvatar(@RequestParam("avatar") MultipartFile file, @AuthenticationPrincipal User currentUser) throws IOException {
+        return usersService.uploadPicture(file, currentUser.getIdUser());
     }
 //    @GetMapping("/me/{bills}")
 //    @PreAuthorize("hasAnyAuthority('USER')")
@@ -53,7 +57,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public Page<User> getUsers(@RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "10") int size,
-                               @RequestParam(defaultValue = "id") String orderBy) {
+                               @RequestParam(defaultValue = "idUser") String orderBy) {
         return usersService.getUsers(page, size, orderBy);
     }
 
@@ -69,21 +73,20 @@ public class UserController {
     }
     
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public User findById(@PathVariable UUID id) {
         return usersService.findById(id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void findByIdAndDelete(@PathVariable UUID id) {
         usersService.findByIdAndDelete(id);
     }
 
     @PostMapping("/{userId}/upload")
-    @PreAuthorize("hasAuthority('USER')")
-    public String uploadAvatar(@RequestParam("avatar") MultipartFile file, @PathVariable UUID userId) throws IOException {
-        return usersService.uploadPicture(file);
+    public String uploadEventImage(@RequestParam("avatar") MultipartFile file, @PathVariable(required = true) UUID userId) throws IOException {
+        return usersService.uploadPicture(file,userId);
     }
 }
