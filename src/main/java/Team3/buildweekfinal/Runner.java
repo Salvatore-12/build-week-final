@@ -98,7 +98,7 @@ public class Runner implements CommandLineRunner {
             user.setUsername(username);
             user.setEmail(email);
             user.setRole(ROLE.USER);
-            user.setAvatar("htpps://ui-avatars.com/api/?name=" + name + "+" + surname);
+            user.setAvatar("https://ui-avatars.com/api/?name=" + name + "+" + surname + "&background=27262c&color=fff");
             user.setPassword(password);
             usersDAO.save(user);
         }

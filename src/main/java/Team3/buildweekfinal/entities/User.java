@@ -42,7 +42,7 @@ public class User implements UserDetails
         this.username = username;
         this.email = email;
         this.password = password;
-        this.avatar = "htpps://ui-avatars.com/api/?name=" + name + "+" + surname;
+        this.avatar = "https://ui-avatars.com/api/?name=" + name + "+" + surname + "&background=27262c&color=fff";
         this.role = ROLE.USER;
     }
 
