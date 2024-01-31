@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+@import url("https://fonts.cdnfonts.com/css/jk-abode");
+
+* {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.login-container {
+  height: 100vh;
+  background-image: url("../../assets/Group\ 1.png");
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+
+.login-form {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.login-title {
+  font-size: 4rem;
+  color: #fff;
+  font-family: "JK Abode", sans-serif;
+}
+
+input::placeholder {
+  color: #999999 !important;
+}
+
+/* Customize the input fields */
+.login-form .form-control {
+  background-color: transparent;
+}
+
+.login-submit {
+  padding: 0.625rem 14.9375rem;
+  text-align: center;
+  gap: 0.625rem;
+  background-color: #4044ed;
+  border: 0;
+  color: white;
+}
+
+/* You may need to adjust sizes and colors to match the provided design exactly */
