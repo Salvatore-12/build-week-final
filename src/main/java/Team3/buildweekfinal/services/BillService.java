@@ -40,7 +40,7 @@ public class BillService
        newbill.setClient(clientsDAO.findById(id).orElseThrow(()->new NotFoundException(id)));
        return billsDAO.save(newbill);
    }
-   public Bill findByIdAndUpdate(UUID idbill,BillDTO body)
+   public Bill findByIdAndUpdate( UUID idbill,BillDTO body)
    {
        Bill found=this.findById(idbill);
        found.setDate(body.date());
@@ -48,7 +48,7 @@ public class BillService
        found.setBillNumber(body.billNumber());
        return billsDAO.save(found);
    }
-   public void findByIdAndDelete(UUID idbill,BillDTO body)
+   public void findByIdAndDelete(UUID idbill)
    {
        Bill found=this.findById(idbill);
        billsDAO.delete(found);

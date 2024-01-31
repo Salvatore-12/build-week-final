@@ -2,6 +2,9 @@ package Team3.buildweekfinal.controllers;
 
 import Team3.buildweekfinal.entities.Bill;
 import Team3.buildweekfinal.exceptions.BadRequestException;
+import Team3.buildweekfinal.payloads.BillDTO;
+import Team3.buildweekfinal.payloads.BillResponseDTO;
+import Team3.buildweekfinal.services.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -18,7 +21,7 @@ public class BillController {
     @Autowired
     private BillService billService;
 
-    @GetMapping
+    @GetMapping("/{idBill}")
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Bill findById(@PathVariable UUID id)
     {
@@ -29,18 +32,16 @@ public class BillController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Page<Bill> getBills(@RequestParam(defaultValue="0") int page,
                                @RequestParam(defaultValue="10")int size,
-                               @RequestParam(defaultValue="id")String orderBy){
-        return billService.getBills(page,size,orderBy);
+                               @RequestParam(defaultValue="idBill")String orderBy){
+        return billService.getBill(page,size,orderBy);
     }
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public BillsResponseDTO saveBill(@RequestBody @Validated BillsDTO body, BindingResult validation){
+    public Bill saveBill(@RequestBody BillDTO body,@PathVariable UUID id, BindingResult validation){
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors());
         }else {
-            Bill newBill=billService.save(body);
-            return new BilllsResponseDTO(newBill.getIdBill());
+            return billService.findByIdAndUpdate(id,body);
         }
     }
 
@@ -48,9 +49,6 @@ public class BillController {
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findByIdAndDelete(@PathVariable UUID id){
-        billService.findByIDAndDelete(id);
+        billService.findByIdAndDelete(id);
     }
-
-
-
 }
