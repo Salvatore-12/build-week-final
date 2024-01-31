@@ -24,9 +24,7 @@ const Login = () => {
 
   const login = async (e) => {
     e.preventDefault();
-    dispatch(getTokenFromLogin(email, password)).then(() => {
-      alert("FATTO");
-    });
+    dispatch(getTokenFromLogin(email, password));
   };
 
   return (
