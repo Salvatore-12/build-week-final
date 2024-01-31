@@ -3,27 +3,29 @@ import { Container, Row, Col, Form, Button, InputGroup } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import "./styles/Login.css";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getTokenFromLogin } from "../Redux/actions";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleShowPassword = (e) => {
     e.preventDefault();
     setShowPassword(!showPassword);
   };
 
-  const baseEndpoint = "http://localhost:3000/auth/login";
+  const baseEndpoint = "http://localhost:3001/auth/login";
 
-  const login = async () => {
-    const response = await fetch(baseEndpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
+  const login = async (e) => {
+    e.preventDefault();
+    dispatch(getTokenFromLogin(email, password)).then(() => {
+      alert("FATTO");
     });
   };
 
@@ -63,7 +65,7 @@ const Login = () => {
               </InputGroup.Text>
             </InputGroup>
 
-            <div className="d-grid gap-2">
+            <div className="d-grid gap-3">
               <button
                 className="login-submit text-center"
                 size="lg"
@@ -71,6 +73,16 @@ const Login = () => {
               >
                 login
               </button>
+              <span className="opacity-50">
+                Non sei ancora registrato?{" "}
+                <span
+                  className="text-decoration-underline"
+                  role="button"
+                  onClick={() => navigate("/register")}
+                >
+                  CLICCA QUI
+                </span>
+              </span>
             </div>
           </Form>
         </Col>

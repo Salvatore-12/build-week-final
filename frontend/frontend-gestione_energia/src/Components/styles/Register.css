@@ -7,7 +7,7 @@
   font-style: normal;
 }
 
-.login-container {
+.register-container {
   height: 100vh;
   background-image: url("../../assets/Group\ 1.png");
   background-size: cover;
@@ -15,11 +15,11 @@
   color: #fff;
 }
 
-.login-form {
+.register-form {
   background-color: rgba(0, 0, 0, 0);
 }
 
-.login-title {
+.register-title {
   font-size: 4rem;
   color: #fff;
   font-family: "JK Abode", sans-serif;
@@ -29,11 +29,11 @@ input::placeholder {
   color: #999999 !important;
 }
 
-.login-form .form-control {
+.register-form .form-control {
   background-color: transparent;
 }
 
-.login-submit {
+.register-submit {
   padding: 0.625rem 14.9375rem;
   text-align: center;
   gap: 0.625rem;
