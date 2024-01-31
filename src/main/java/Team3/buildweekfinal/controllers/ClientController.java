@@ -65,6 +65,7 @@ public class ClientController
     {
         clientService.findByIdAndDelete(currentClient.getPiva());
     }
+    //**********************************QUERY BLOCCO 1************************************************
     @GetMapping("/findByAnnualTurnOver")
     public Client findByAnnualTurnOver(@RequestParam double annualTurnOver)
     {
@@ -85,34 +86,32 @@ public class ClientController
     {
         return clientService.findByPartName(name);
     }
-
-/*
-    @GetMapping("/findByClient")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public Bill findByClient(@RequestParam String email){
-        return clientService.findByClient(email);
+    //************************************************QUERY PARTE 2************************************************
+    @GetMapping("/findBillByEmail")
+    public Bill findByEmail(@RequestParam String email)
+    {
+        return clientService.findByEmail(email);
     }
     @GetMapping("/findByCtype")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public Bill findByCtype(@RequestParam CTYPE ctype){
+    public Bill findByCtype(@RequestParam CTYPE ctype)
+    {
         return clientService.findByCtype(ctype);
     }
-
-    @GetMapping("/findByDate")
-    public Bill findByDate(@RequestParam LocalDate date){
-        return clientService.findByDate(date);
+    @GetMapping("/findBydate")
+    public Bill findBydate(@RequestParam LocalDate date)
+    {
+        return clientService.findBydate(date);
     }
-
     @GetMapping("/findByYear")
-    public Bill findByYear(@RequestParam int year){
+    public Bill findByYear(@RequestParam int year)
+    {
         return clientService.findByYear(year);
     }
-
-    @GetMapping("/RangeOfAmmounts")
-    public Bill findByTotalIsLessThanMinAndIsGreaterThanMax(@RequestParam int min,int max,double total){
-        return clientService.findByRange(min,max,total);
+    @GetMapping("/filterBytotal")
+    public Bill filterBytotal(@RequestParam double minAmount,@RequestParam double maxAmount)
+    {
+        return clientService.filterBytotal(minAmount,maxAmount);
     }
-*/
 
 
 }
