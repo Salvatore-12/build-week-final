@@ -20,8 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Array;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 @Component
 @Order(1)
@@ -31,6 +30,8 @@ public class CsvLoader implements CommandLineRunner {
 
     @Autowired
     private AreasDAO areasDAO;
+
+    private static final Map<String, String> exceptionsMap = createExceptionsMap();
 
     @Override
     public void run(String... args) throws Exception {
@@ -59,12 +60,18 @@ public class CsvLoader implements CommandLineRunner {
         List<CsvProvinceDTO> csvProvinceDTOS = new CsvToBeanBuilder<CsvProvinceDTO>(fileReader)
                 .withType(CsvProvinceDTO.class)
                 .withSeparator(';')
+                .withSkipLines(1)
                 .build()
                 .parse();
 
         csvProvinceDTOS.forEach(csvProvinceDTO -> {
+            if (csvProvinceDTO.getSigla().length() > 2) System.out.println(csvProvinceDTO.getSigla());
             Province province = new Province();
-            province.setInitials(csvProvinceDTO.getSigla());
+            if (csvProvinceDTO.getSigla().equals("Roma")) {
+                province.setInitials("RM");
+            } else {
+                province.setInitials(csvProvinceDTO.getSigla());
+            }
             province.setProvinceName(csvProvinceDTO.getProvincia());
             province.setRegion(csvProvinceDTO.getRegione());
 
@@ -89,17 +96,15 @@ public class CsvLoader implements CommandLineRunner {
             area.setProgressiveArea(csvAreaDTO.getProgressivoComune());
             area.setProvinceCode(csvAreaDTO.getCodiceProvincia());
 
-            if (!(csvAreaDTO.getProvinceName() == null)) {
-                String[] nameSplit = csvAreaDTO.getProvinceName().split(" ");
-                String newName = csvAreaDTO.getProvinceName();
+            if (csvAreaDTO.getProvinceName() != null) {
+                String normalizedName = normalizeProvinceName(csvAreaDTO.getProvinceName());
 
-                if (nameSplit.length > 0) {
-                    newName = String.join("-", nameSplit);
-                }
-                Province province = provincesDAO.findByProvinceName(newName);
-                //questo if è solo per debug
+                Province province = provincesDAO.findByProvinceName(normalizedName);
+
+                // questo if è solo per debug
                 if (province == null) {
                     i++;
+                    System.out.println(normalizedName);
                 } else {
                     province.addArea(area);
                     area.setProvince(province);
@@ -109,5 +114,54 @@ public class CsvLoader implements CommandLineRunner {
             }
         }
         System.out.println(i);
+    }
+
+    private static Map<String, String> createExceptionsMap() {
+        //CHIAVE: nome nel file comuni-italiani
+        //VALORE: corrispettivo nel file province-italiane
+        Map<String, String> map = new HashMap<>();
+        map.put("valle d'aosta/vallée d'aoste", "Aosta");
+        map.put("sud sardegna", "Cagliari");
+        map.put("monza e della brianza", "Monza-Brianza");
+        map.put("verbano-cusio-ossola", "Verbania");
+        map.put("reggio nell'emilia", "Reggio-Emilia");
+        map.put("forlì-cesena", "Forli-Cesena");
+        map.put("pesaro e urbino", "Pesaro-Urbino");
+        return map;
+    }
+
+    public static String normalizeProvinceName(String name) {
+        // controlla prima nel mapping se c'è una chiave corrispondente al nome della provincia nel file comuni-italiani.csv
+        String lowerCaseName = name.toLowerCase();
+        if (exceptionsMap.containsKey(lowerCaseName)) {
+            return exceptionsMap.get(lowerCaseName);
+        }
+
+        // se non era presente la chiave corrispondente, normalizza la stringa seguendo le regole del file province....csv
+        String normalized = lowerCaseName.split("/")[0];
+        normalized = normalized.replace(" ", "-");
+
+
+        normalized = capitalizeWords(normalized);
+
+        return normalized;
+    }
+
+    //riconverte il maiuscole le iniziali di ogni parola in una stringa
+    private static String capitalizeWords(String input) {
+        //array di char (ogni carattere della stringa è separato, cosi posso ciclarlo)
+        char[] chars = input.toLowerCase().toCharArray();
+        boolean found = false;
+        for (int i = 0; i < chars.length; i++) {
+            if (!found && Character.isLetter(chars[i])) {
+                chars[i] = Character.toUpperCase(chars[i]);
+                found = true;
+            } else if (Character.isWhitespace(chars[i]) || chars[i] == '-' || chars[i] == '\'') {
+                found = false;
+                //se trovo uno spazio, un '-' o uno '/', vuol dire che sta per iniziare una nuova parola,
+                //quindi imposto 'found' su false, cosi che al prossimo ciclo imposti la lettera successiva in maiuscolo.
+            }
+        }
+        return String.valueOf(chars);
     }
 }
