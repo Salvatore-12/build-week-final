@@ -1,11 +1,9 @@
 package Team3.buildweekfinal.services;
 
-import Team3.buildweekfinal.entities.Bill;
-import Team3.buildweekfinal.entities.CTYPE;
-import Team3.buildweekfinal.entities.Client;
+import Team3.buildweekfinal.entities.*;
 import Team3.buildweekfinal.Payloads.ClientsDTO;
-import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.NotFoundException;
+import Team3.buildweekfinal.repositories.AddressDAO;
 import Team3.buildweekfinal.repositories.BillsDAO;
 import Team3.buildweekfinal.repositories.ClientsDAO;
 import Team3.buildweekfinal.repositories.UsersDAO;
@@ -21,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +33,8 @@ public class ClientService
     @Autowired
     private UsersDAO usersDAO;
     @Autowired
+    private AddressDAO addressDAO;
+    @Autowired
     private Cloudinary cloudinaryUploader;
 
     public Page<Client> getClients(int page, int size, String orderBy)
@@ -44,13 +45,32 @@ public class ClientService
     }
     public Client findByID(UUID id)
     {
-
         return clientsDAO.findById(id).orElseThrow(()->new NotFoundException(id));
     }
     public void findByIdAndDelete(UUID id)
     {
         Client found=this.findByID(id);
         clientsDAO.delete(found);
+    }
+    public Client save(UUID idBill,UUID idUser,UUID idAddress, ClientsDTO body)
+    {
+        Client newclient=new Client();
+        newclient.setUser(usersDAO.findById(idUser).orElseThrow(()->new NotFoundException(idUser)));
+        List<Bill> billList=new ArrayList<>();
+        billList.add(billsDAO.findById(idBill).orElseThrow(()->new NotFoundException(idBill)));
+        newclient.setBills(billList);
+        List<Address> addressList=new ArrayList<>();
+        addressList.add(addressDAO.findById(idAddress).orElseThrow(()->new NotFoundException(idAddress)));
+        newclient.setAddress(addressList);
+        newclient.setEmail(body.email());
+        newclient.setInsertDate(body.insertDate());
+        newclient.setLastCall(body.lastCall());
+        newclient.setAnnualTurnOver(body.annualTurnOver());
+        newclient.setNumber(body.number());
+        newclient.setPec(body.pec());
+        newclient.setCtype(CTYPE.valueOf(body.ctype()));
+        return clientsDAO.save(newclient);
+
     }
     public Client findByIdAndUpdate(UUID id, ClientsDTO body)
     {
