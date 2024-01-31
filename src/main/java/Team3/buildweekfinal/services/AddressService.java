@@ -1,7 +1,6 @@
 package Team3.buildweekfinal.services;
 
 import Team3.buildweekfinal.entities.Address;
-import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.NotFoundException;
 import Team3.buildweekfinal.payloads.AddressDTO;
 import Team3.buildweekfinal.repositories.AddressDAO;
@@ -11,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import java.util.UUID;
 
 @Service
@@ -39,14 +37,18 @@ public class AddressService {
         newAddress.setCap(body.cap());
         return addressDAO.save(newAddress);
     }
-/*    public Address findAdressByIdAndUpdate (AddressDTO body){
-
+    public Address findAdressByIdAndUpdate (UUID idAddress, AddressDTO body){
+        Address newAddress = this.findById(idAddress);
         newAddress.setAddress(body.address());
         newAddress.setCv(body.cv());
         newAddress.setCity(body.city());
         newAddress.setCap(body.cap());
         return addressDAO.save(newAddress);
-    }*/
+    }
+
+    public void deleteAddress (UUID id){
+        addressDAO.deleteById(id);
+    }
 
 
 }
