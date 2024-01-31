@@ -14,7 +14,7 @@ const Home = () => {
     if (token !== null) {
       dispatch(fetchUserData(token));
     }
-  });
+  }, []);
 
   return (
     <>
