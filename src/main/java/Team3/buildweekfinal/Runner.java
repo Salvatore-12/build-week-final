@@ -67,11 +67,12 @@ public class Runner implements CommandLineRunner {
     }
 
     public void createAdmins() {
-        User alex = new User("Alex", "Larionov", "allar11914", "alex.larionov@mail.com", "1234");
-        User fabio = new User("Fabio", "Simonelli", "simo11214", "fabio.simonelli@mail.com", "1234");
-        User bruno = new User("Bruno", "Capobianco", "bru13914", "bruno.capobianco@mail.com", "1234");
-        User salvatore = new User("Salvatore", "Assennato", "sal11914", "salvatore.assennato@mail.com", "1234");
-        User giorgio = new User("Giorgio", "Migliaccio", "gio11914", "giorgio.migliaccio@mail.com", "1234");
+        String defaultPassword = bcrypt.encode("1234");
+        User alex = new User("Alex", "Larionov", "allar11914", "alex.larionov@mail.com", defaultPassword);
+        User fabio = new User("Fabio", "Simonelli", "simo11214", "fabio.simonelli@mail.com", defaultPassword);
+        User bruno = new User("Bruno", "Capobianco", "bru13914", "bruno.capobianco@mail.com", defaultPassword);
+        User salvatore = new User("Salvatore", "Assennato", "sal11914", "salvatore.assennato@mail.com", defaultPassword);
+        User giorgio = new User("Giorgio", "Migliaccio", "gio11914", "giorgio.migliaccio@mail.com", defaultPassword);
         alex.setRole(ROLE.ADMIN);
         fabio.setRole(ROLE.ADMIN);
         bruno.setRole(ROLE.ADMIN);
