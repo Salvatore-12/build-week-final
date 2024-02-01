@@ -25,4 +25,10 @@ public class Bill
     @ManyToOne
     private Client client;
 
+    public Bill(LocalDate date, double total, int billNumber, Client client) {
+        this.date = date;
+        this.total = total;
+        this.billNumber = billNumber;
+        this.client = client;
+    }
 }
