@@ -1,11 +1,9 @@
 package Team3.buildweekfinal;
 
-import Team3.buildweekfinal.entities.Address;
-import Team3.buildweekfinal.entities.Area;
-import Team3.buildweekfinal.entities.ROLE;
-import Team3.buildweekfinal.entities.User;
+import Team3.buildweekfinal.entities.*;
 import Team3.buildweekfinal.repositories.AddressDAO;
 import Team3.buildweekfinal.repositories.AreasDAO;
+import Team3.buildweekfinal.repositories.ClientsDAO;
 import Team3.buildweekfinal.repositories.UsersDAO;
 import Team3.buildweekfinal.services.AddressService;
 import Team3.buildweekfinal.services.AuthService;
@@ -17,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import com.github.javafaker.Faker;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -40,6 +39,8 @@ public class Runner implements CommandLineRunner {
     private AddressService addressService;
     @Autowired
     private AddressDAO addressDAO;
+    @Autowired
+    ClientsDAO clientsDAO;
     Faker faker = new Faker(new Locale("it"));
 
     @Override
@@ -68,17 +69,16 @@ public class Runner implements CommandLineRunner {
 
     public void createAdmins() {
         String defaultPassword = bcrypt.encode("1234");
-        User alex = new User("Alex", "Larionov", "allar11914", "alex.larionov@mail.com", defaultPassword);
         User fabio = new User("Fabio", "Simonelli", "simo11214", "fabio.simonelli@mail.com", defaultPassword);
         User bruno = new User("Bruno", "Capobianco", "bru13914", "bruno.capobianco@mail.com", defaultPassword);
         User salvatore = new User("Salvatore", "Assennato", "sal11914", "salvatore.assennato@mail.com", defaultPassword);
         User giorgio = new User("Giorgio", "Migliaccio", "gio11914", "giorgio.migliaccio@mail.com", defaultPassword);
-        alex.setRole(ROLE.ADMIN);
+
         fabio.setRole(ROLE.ADMIN);
         bruno.setRole(ROLE.ADMIN);
         salvatore.setRole(ROLE.ADMIN);
         giorgio.setRole(ROLE.ADMIN);
-        usersDAO.save(alex);
+
         usersDAO.save(fabio);
         usersDAO.save(bruno);
         usersDAO.save(salvatore);

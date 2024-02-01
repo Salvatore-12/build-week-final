@@ -57,4 +57,12 @@ public class BillController {
     public void findByIdAndDelete(@PathVariable UUID id){
         billService.findByIdAndDelete(id);
     }
+
+    @GetMapping("/client/{clientId}")
+    public Page<Bill> getBillsByClient(@RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "10") int size,
+                                       @RequestParam(defaultValue = "idBill") String sortBy,
+                                       @PathVariable UUID clientId) {
+        return billService.findBillByClient(page, size, sortBy, clientId);
+    }
 }

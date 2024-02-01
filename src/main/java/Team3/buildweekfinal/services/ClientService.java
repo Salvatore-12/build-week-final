@@ -43,13 +43,13 @@ public class ClientService
         Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy));
         return clientsDAO.findAll(pageable);
     }
-    public Client findByID(UUID id)
+    public Client findById(UUID id)
     {
         return clientsDAO.findById(id).orElseThrow(()->new NotFoundException(id));
     }
     public void findByIdAndDelete(UUID id)
     {
-        Client found=this.findByID(id);
+        Client found=this.findById(id);
         clientsDAO.delete(found);
     }
     public Client save(UUID idBill,UUID idUser,UUID idAddress, ClientsDTO body)
@@ -74,7 +74,7 @@ public class ClientService
     }
     public Client findByIdAndUpdate(UUID id, ClientsDTO body)
     {
-        Client found=this.findByID(id);
+        Client found=this.findById(id);
         found.setEmail(body.email());
         found.setInsertDate(body.insertDate());
         found.setLastCall(body.lastCall());

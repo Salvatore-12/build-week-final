@@ -1,5 +1,6 @@
 package Team3.buildweekfinal.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,7 +34,12 @@ public class Client
     private User user;
     @OneToMany(mappedBy = "client")
     private List<Address> address=new ArrayList<>();
+    @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Bill> bills =new ArrayList<>();
+
+    public void addBillToClient (Bill bill){
+        this.bills.add(bill);
+    }
 
 }

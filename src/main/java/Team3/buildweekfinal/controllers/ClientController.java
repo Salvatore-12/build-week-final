@@ -5,7 +5,6 @@ import Team3.buildweekfinal.entities.CTYPE;
 import Team3.buildweekfinal.entities.Client;
 import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.BadRequestException;
-import Team3.buildweekfinal.payloads.BillDTO;
 import Team3.buildweekfinal.payloads.ClientsDTO;
 import Team3.buildweekfinal.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,7 @@ public class ClientController
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Client getClient(@PathVariable UUID id)
     {
-        return clientService.findByID(id);
+        return clientService.findById(id);
     }
 
     @PutMapping("/{piva}")
@@ -69,7 +68,7 @@ public class ClientController
     @GetMapping("/me")
     public Client getCurrentClient(@AuthenticationPrincipal Client currentClient)
     {
-        return clientService.findByID(currentClient.getPiva());
+        return clientService.findById(currentClient.getPiva());
     }
 
     @PutMapping("/me")
