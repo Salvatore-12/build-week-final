@@ -2,7 +2,8 @@ import { ActionTypes } from "./actions";
 
 const initialstate = {
   token: localStorage.getItem("token") || null,
-  data: null
+  data: null,
+  loading: true
 };
 
 const reducer = (state = initialstate, action) => {
@@ -11,6 +12,8 @@ const reducer = (state = initialstate, action) => {
       return { ...state, token: action.payload };
     case ActionTypes.SET_USER_DATA:
       return { ...state, data: action.payload };
+    case ActionTypes.SET_LOADING:
+      return { ...state, loading: action.payload };
     default:
       return state;
   }

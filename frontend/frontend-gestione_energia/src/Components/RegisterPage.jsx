@@ -19,27 +19,25 @@ const Register = () => {
 
   const register = async (e) => {
     e.preventDefault();
-    for (let i = 0; i < 500; i++) {
-      if (checkIfPassAreEquals()) {
-        const objectToUse = {
-          name: name,
-          surname: surname,
-          username: username,
-          email: email,
-          password: password
-        };
+    if (checkIfPassAreEquals()) {
+      const objectToUse = {
+        name: name,
+        surname: surname,
+        username: username,
+        email: email,
+        password: password
+      };
 
-        const response = await fetch(baseEndpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(objectToUse)
-        });
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data);
-        } else {
-          console.error("errore");
-        }
+      const response = await fetch(baseEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(objectToUse)
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+      } else {
+        console.error("errore");
       }
     }
   };

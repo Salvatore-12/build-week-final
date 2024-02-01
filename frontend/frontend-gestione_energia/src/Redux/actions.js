@@ -1,6 +1,7 @@
 export const ActionTypes = {
   SET_USER_TOKEN: "SET_USER_TOKEN",
-  SET_USER_DATA: "SET_USER_DATA"
+  SET_USER_DATA: "SET_USER_DATA",
+  SET_LOADING: "SET_LOADING"
 };
 
 export const setUserToken = (token) => ({
@@ -11,6 +12,11 @@ export const setUserToken = (token) => ({
 export const setUserData = (data) => ({
   type: ActionTypes.SET_USER_DATA,
   payload: data
+});
+
+export const setLoading = (bool) => ({
+  type: ActionTypes.SET_LOADING,
+  payload: bool
 });
 
 export const getTokenFromLogin = (email, password) => async (dispatch) => {
@@ -27,7 +33,7 @@ export const getTokenFromLogin = (email, password) => async (dispatch) => {
     const data = await response.json();
     dispatch(setUserToken(data.token));
     localStorage.setItem("token", data.token);
-    console.log(data);
+    return data.token;
   } else {
     throw new Error("errore");
   }
@@ -46,6 +52,7 @@ export const fetchUserData = (token) => async (dispatch) => {
     const data = await response.json();
     dispatch(setUserData(data));
     console.log(data);
+    return data;
   } else {
     throw new Error("errore");
   }

@@ -37,9 +37,10 @@ public class AuthService
         User newUser=new User();
         newUser.setName(body.name());
         newUser.setSurname(body.surname());
+        newUser.setUsername(body.username());
         newUser.setRole(ROLE.USER);
         newUser.setEmail(body.email());
-        newUser.setAvatar(("htpps://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname()));
+        newUser.setAvatar(("https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname()));
         newUser.setPassword(bcrypt.encode(body.password()));
         return usersDAO.save(newUser);
     }

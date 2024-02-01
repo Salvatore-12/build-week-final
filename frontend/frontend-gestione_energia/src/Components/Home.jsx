@@ -10,12 +10,6 @@ const Home = () => {
   const userData = useSelector((state) => state.data);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (token !== null) {
-      dispatch(fetchUserData(token));
-    }
-  }, []);
-
   return (
     <>
       <NavBar />
