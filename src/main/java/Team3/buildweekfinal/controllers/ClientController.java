@@ -6,7 +6,7 @@ import Team3.buildweekfinal.entities.Client;
 import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.BadRequestException;
 import Team3.buildweekfinal.payloads.BillDTO;
-import Team3.buildweekfinal.Payloads.ClientsDTO;
+import Team3.buildweekfinal.payloads.ClientsDTO;
 import Team3.buildweekfinal.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -55,7 +55,7 @@ public class ClientController
     @PutMapping("/{piva}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Client getClientByIdAndUpdate(@PathVariable UUID id, Team3.buildweekfinal.Payloads.ClientsDTO modifyClientPayload)
+    public Client getClientByIdAndUpdate(@PathVariable UUID id, ClientsDTO modifyClientPayload)
     {
         return clientService.findByIdAndUpdate(id,modifyClientPayload);
     }
@@ -73,7 +73,7 @@ public class ClientController
     }
 
     @PutMapping("/me")
-    public Client modifyClient(@AuthenticationPrincipal Client currentClient, Team3.buildweekfinal.Payloads.ClientsDTO modifyClientPayload)
+    public Client modifyClient(@AuthenticationPrincipal Client currentClient, ClientsDTO modifyClientPayload)
     {
         return clientService.findByIdAndUpdate(currentClient.getPiva(),modifyClientPayload);
     }

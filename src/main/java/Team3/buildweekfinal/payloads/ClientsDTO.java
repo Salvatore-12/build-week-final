@@ -1,4 +1,4 @@
-package Team3.buildweekfinal.Payloads;
+package Team3.buildweekfinal.payloads;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

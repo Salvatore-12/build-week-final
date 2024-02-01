@@ -1,7 +1,7 @@
 package Team3.buildweekfinal.services;
 
 import Team3.buildweekfinal.entities.*;
-import Team3.buildweekfinal.Payloads.ClientsDTO;
+import Team3.buildweekfinal.payloads.ClientsDTO;
 import Team3.buildweekfinal.exceptions.NotFoundException;
 import Team3.buildweekfinal.repositories.AddressDAO;
 import Team3.buildweekfinal.repositories.BillsDAO;
