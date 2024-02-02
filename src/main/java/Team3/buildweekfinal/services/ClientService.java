@@ -24,8 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class ClientService
-{
+public class ClientService {
     @Autowired
     private ClientsDAO clientsDAO;
     @Autowired
@@ -37,33 +36,37 @@ public class ClientService
     @Autowired
     private Cloudinary cloudinaryUploader;
 
-    public Page<Client> getClients(int page, int size, String orderBy)
-    {
+    public Page<Client> getClients(int page, int size, String orderBy) {
         if (size < 0)
             size = 10;
         if (size > 100)
             size = 20;
-        Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(orderBy));
+        if (orderBy.equals("insertDate")) {
+            pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "insertDate"));
+        } else if (orderBy.equals("lastCall")) {
+            pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "lastCall"));
+        }
         return clientsDAO.findAll(pageable);
     }
-    public Client findById(UUID id)
-    {
-        return clientsDAO.findById(id).orElseThrow(()->new NotFoundException(id));
+
+    public Client findById(UUID id) {
+        return clientsDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
-    public void findByIdAndDelete(UUID id)
-    {
-        Client found=this.findById(id);
+
+    public void findByIdAndDelete(UUID id) {
+        Client found = this.findById(id);
         clientsDAO.delete(found);
     }
-    public Client save(UUID idBill,UUID idUser,UUID idAddress, ClientsDTO body)
-    {
-        Client newclient=new Client();
-        newclient.setUser(usersDAO.findById(idUser).orElseThrow(()->new NotFoundException(idUser)));
-        List<Bill> billList=new ArrayList<>();
-        billList.add(billsDAO.findById(idBill).orElseThrow(()->new NotFoundException(idBill)));
+
+    public Client save(UUID idBill, UUID idUser, UUID idAddress, ClientsDTO body) {
+        Client newclient = new Client();
+        newclient.setUser(usersDAO.findById(idUser).orElseThrow(() -> new NotFoundException(idUser)));
+        List<Bill> billList = new ArrayList<>();
+        billList.add(billsDAO.findById(idBill).orElseThrow(() -> new NotFoundException(idBill)));
         newclient.setBills(billList);
-        List<Address> addressList=new ArrayList<>();
-        addressList.add(addressDAO.findById(idAddress).orElseThrow(()->new NotFoundException(idAddress)));
+        List<Address> addressList = new ArrayList<>();
+        addressList.add(addressDAO.findById(idAddress).orElseThrow(() -> new NotFoundException(idAddress)));
         newclient.setAddress(addressList);
         newclient.setEmail(body.email());
         newclient.setName(body.name());
@@ -76,9 +79,9 @@ public class ClientService
         return clientsDAO.save(newclient);
 
     }
-    public Client findByIdAndUpdate(UUID id, ClientsDTO body)
-    {
-        Client found=this.findById(id);
+
+    public Client findByIdAndUpdate(UUID id, ClientsDTO body) {
+        Client found = this.findById(id);
         found.setEmail(body.email());
         found.setInsertDate(body.insertDate());
         found.setLastCall(body.lastCall());
@@ -89,6 +92,7 @@ public class ClientService
         found.setCtype(CTYPE.valueOf(body.ctype()));
         return clientsDAO.save(found);
     }
+
     public String uploadPicture(MultipartFile file) throws IOException {
 
         String url = (String) cloudinaryUploader.uploader()
@@ -96,48 +100,49 @@ public class ClientService
                 .get("url");
         return url;
     }
-    public Page<Client> findPersonalClients(int page,int size,String orderBy, User currentUser){
-        if(size>=100)size=100;
-        Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy));
+
+    public Page<Client> findPersonalClients(int page, int size, String orderBy, User currentUser) {
+        if (size >= 100) size = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(orderBy));
         return clientsDAO.findByUserIdUser(pageable, currentUser.getIdUser());
 
     }
+
     //****************************************************************QUERY****************************************************************
-    public Client findByAnnualTurnOver(double annualTurnOver)
-    {
-        return clientsDAO.findByAnnualTurnOver(annualTurnOver).orElseThrow(()->new NotFoundException(String.valueOf(annualTurnOver)));
+    public Client findByAnnualTurnOver(double annualTurnOver) {
+        return clientsDAO.findByAnnualTurnOver(annualTurnOver).orElseThrow(() -> new NotFoundException(String.valueOf(annualTurnOver)));
     }
-    public Client findByInsertDate(LocalDate insertDate)
-    {
-        return clientsDAO.findByInsertDate(insertDate).orElseThrow(()->new NotFoundException(String.valueOf(insertDate)));
+
+    public Client findByInsertDate(LocalDate insertDate) {
+        return clientsDAO.findByInsertDate(insertDate).orElseThrow(() -> new NotFoundException(String.valueOf(insertDate)));
     }
-    public Client findBylastCall(LocalDate lastCall)
-    {
-        return clientsDAO.findByLastCall(lastCall).orElseThrow(()->new NotFoundException(String.valueOf(lastCall)));
+
+    public Client findBylastCall(LocalDate lastCall) {
+        return clientsDAO.findByLastCall(lastCall).orElseThrow(() -> new NotFoundException(String.valueOf(lastCall)));
 
     }
-    public User findByPartName(String name)
-    {
-        return usersDAO.findByNameContainingIgnoreCase(name).orElseThrow(()->new NotFoundException(name));
+
+    public User findByPartName(String name) {
+        return usersDAO.findByNameContainingIgnoreCase(name).orElseThrow(() -> new NotFoundException(name));
     }
-   public Bill findByEmail(String email)
-   {
-       return clientsDAO.findByEmail(email).orElseThrow(()->new NotFoundException(email));
-   }
-   public Bill findByCtype(CTYPE ctype)
-   {
-       return clientsDAO.findByCtype(ctype).orElseThrow(()->new NotFoundException(String.valueOf(ctype)));
-   }
-    public Bill findBydate(LocalDate date)
-    {
-        return billsDAO.findByDate(date).orElseThrow(()->new NotFoundException(String.valueOf(date)));
+
+    public Bill findByEmail(String email) {
+        return clientsDAO.findByEmail(email).orElseThrow(() -> new NotFoundException(email));
     }
-    public Bill findByYear(int year)
-    {
-        return billsDAO.filterByYear(year).orElseThrow(()->new NotFoundException(String.valueOf(year)));
+
+    public Bill findByCtype(CTYPE ctype) {
+        return clientsDAO.findByCtype(ctype).orElseThrow(() -> new NotFoundException(String.valueOf(ctype)));
     }
-    public Bill filterBytotal(double minAmount,double maxAmount)
-    {
-        return billsDAO.filterBytotal(minAmount,maxAmount).orElseThrow(()->new NotFoundException("fatture non trovate"));
+
+    public Bill findBydate(LocalDate date) {
+        return billsDAO.findByDate(date).orElseThrow(() -> new NotFoundException(String.valueOf(date)));
+    }
+
+    public Bill findByYear(int year) {
+        return billsDAO.filterByYear(year).orElseThrow(() -> new NotFoundException(String.valueOf(year)));
+    }
+
+    public Bill filterBytotal(double minAmount, double maxAmount) {
+        return billsDAO.filterBytotal(minAmount, maxAmount).orElseThrow(() -> new NotFoundException("fatture non trovate"));
     }
 }
