@@ -5,7 +5,10 @@ const initialstate = {
   clientsData: null,
   billsData: null,
   data: null,
-  loading: true
+  loading: true,
+  role: "USER",
+  allUsers: null,
+  allClients: null
 };
 
 const reducer = (state = initialstate, action) => {
@@ -20,6 +23,12 @@ const reducer = (state = initialstate, action) => {
       return { ...state, clientsData: action.payload };
     case ActionTypes.SET_BILLS_DATA:
       return { ...state, billsData: action.payload };
+    case ActionTypes.SET_USER_ROLE:
+      return { ...state, role: action.payload };
+    case ActionTypes.SET_ALL_USERS:
+      return { ...state, allUsers: action.payload };
+    case ActionTypes.SET_ALL_CLIENTS:
+      return { ...state, allClients: action.payload };
     default:
       return state;
   }

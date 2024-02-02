@@ -1,7 +1,7 @@
 import { Col, Container, Row, Card, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import "./styles/Profile.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { changeName, changePassword } from "../Redux/actions";
 import Navbar from "./Navbar.jsx";
 
@@ -15,8 +15,11 @@ const PersonalProfile = () => {
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [error, setError] = useState(null);
+  const [passwordSecurity, setPasswordSecurity] = useState(null);
 
   const dispatch = useDispatch();
+
+  const format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
 
   const save = (e) => {
     e.preventDefault();
@@ -47,6 +50,21 @@ const PersonalProfile = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (password) {
+      if (password.trim() !== "") {
+        if (password.length > 6) {
+          setPasswordSecurity(passwordSecurity ? passwordSecurity + 1 : 1);
+        }
+        if (password.match(format)) {
+          setPasswordSecurity(passwordSecurity ? passwordSecurity + 1 : 1);
+        }
+      } else {
+        setPasswordSecurity(null);
+      }
+    }
+  }, [password]);
 
   return (
     <>
