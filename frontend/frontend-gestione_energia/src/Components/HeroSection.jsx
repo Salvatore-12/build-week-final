@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import hero from "../assets/hero.webp";
 import heroUnlogged from "../assets/hero-unlogged.webp";
 import { useNavigate } from "react-router";
+import "./styles/Hero.css";
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -44,9 +45,10 @@ const HeroSection = () => {
                 : `Unisciti a noi e proiettiamoci insieme verso il futuro`}
             </h4>
             <button
-              className="btn btn-outline-light btn-lg border border-0 border-bottom"
+              className="btn btn-outline-light btn-lg border border-0 border-bottom hero-button"
               style={{
-                backgroundColor: "rgba(64, 68, 237, 0.2)",
+                background:
+                  "linear-gradient(17deg, rgba(64,68,237,0.2) 0%, rgba(39,38,44,0.8) 100%)",
                 boxShadow: "-1px 1px 11px 1px #000000",
                 textShadow: "0px 0px 3px #000000"
               }}
