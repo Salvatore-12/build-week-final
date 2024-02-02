@@ -21,6 +21,6 @@ public interface ClientsDAO extends JpaRepository<Client,UUID>
     Optional<Bill> findByEmail(String email);
     Optional<Bill> findByCtype(CTYPE ctype);
 
- 
+
 
 }
