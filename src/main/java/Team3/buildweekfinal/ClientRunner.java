@@ -18,6 +18,8 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.Scanner;
 
+import static java.lang.Long.parseLong;
+
 @Component
 @Order(3)
 public class ClientRunner implements CommandLineRunner {
@@ -75,11 +77,7 @@ public class ClientRunner implements CommandLineRunner {
         return rmdDate;
     }
 
-    public long getRandomNumberLong() {
-        Random rmd = new Random();
-        long rmdLongNumber = rmd.nextLong(10000);
-        return rmdLongNumber;
-    }
+
 
     public LocalDate getRandomDate() {
         Random random = new Random();
@@ -100,19 +98,25 @@ public class ClientRunner implements CommandLineRunner {
         User alex = new User("Alex", "Larionov", "allar11914", "alex.larionov@mail.com", defaultPassword);
         alex.setRole(ROLE.ADMIN);
         usersDAO.save(alex);
-        Client alexClient = new Client();
-        alexClient.setEmail(faker.internet().emailAddress());
-        alexClient.setInsertDate(LocalDate.of(2022, 3, 12));
-        alexClient.setLastCall(LocalDate.now().minusDays(30));
-        alexClient.setAnnualTurnOver(5610000);
-        alexClient.setPec(alex.getEmail());
-        alexClient.setNumber(1L);
-        alexClient.setCtype(CTYPE.SPA);
-        alexClient.setUser(alex);
-        alexClient.setName(faker.company().name());
-        clientsDAO.save(alexClient);
-        Bill fatturaAlex = new Bill(LocalDate.of(2023, 5, 26), 500000, 5, alexClient);
-        billsDAO.save(fatturaAlex);
+        for (int i = 0; i < 10; i++) {
+            Random billRnd = new Random();
+            Client alexClient = new Client();
+            alexClient.setEmail(faker.internet().emailAddress());
+            alexClient.setInsertDate(LocalDate.of(faker.number().numberBetween(2010, 2023), 2 + i, 12 + i));
+            alexClient.setLastCall(LocalDate.now().minusDays(30));
+            alexClient.setAnnualTurnOver(faker.number().numberBetween(1000000, 10000000));
+            alexClient.setPec(alex.getEmail());
+            alexClient.setNumber(faker.phoneNumber().phoneNumber().substring(1));
+            alexClient.setCtype(CTYPE.SPA);
+            alexClient.setUser(alex);
+            alexClient.setName(faker.company().name());
+            clientsDAO.save(alexClient);
+            for (int j = 0; j < billRnd.nextInt(4, 10); j++) {
+                Bill fatturaAlex = new Bill(LocalDate.of(faker.number().numberBetween(2010, 2023), 2 + i, 13 + i), faker.number().numberBetween(50000, 700000), faker.number().numberBetween(1000, 7000), alexClient);
+                billsDAO.save(fatturaAlex);
+            }
+        }
+
 
         for (int i = 0; i < 10; i++) {
             String email = faker.internet().emailAddress();
@@ -120,7 +124,7 @@ public class ClientRunner implements CommandLineRunner {
             LocalDate lastCall = LocalDate.now().minusDays(30);
             double annualTurnOver = 300000;
             String pec = faker.internet().emailAddress();
-            Long number = getRandomNumberLong();
+            String number = faker.phoneNumber().phoneNumber();
             Client client = new Client();
             client.setEmail(email);
             client.setInsertDate(insertDate);

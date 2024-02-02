@@ -30,7 +30,7 @@ public class Client
     private LocalDate lastCall;
     private double annualTurnOver;
     private String pec;
-    private Long number;
+    private String number;
     @Enumerated(EnumType.STRING)
     private CTYPE ctype;
     @ManyToOne

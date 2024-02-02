@@ -14,6 +14,7 @@ import OverlayLoading from "./Components/OverlayLoading";
 import Dashboard from "./Components/Dashboard.jsx";
 import PersonalProfile from "./Components/PersonalProfile.jsx";
 import PricesPage from "./Components/PricesPage.jsx";
+import BackOffice from "./Components/BackOffice.jsx";
 
 function App() {
   const token = useSelector((state) => state.token);
@@ -41,6 +42,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/home" element={<Home />} />
         <Route path="/prices" element={<PricesPage />} />
+        <Route path="/backOffice" element={<BackOffice />} />
       </Routes>
     </BrowserRouter>
   );

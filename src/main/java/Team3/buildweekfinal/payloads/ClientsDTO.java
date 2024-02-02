@@ -21,7 +21,7 @@ public record ClientsDTO(
         @NotEmpty(message = "inserisci la tua pec")
         String pec,
         @NotNull(message = "metti il numero di telefono")
-        Long number,
+        String number,
         @Pattern(regexp = "SPA|SRL|PA|SAS", message = "il tipo del  client non è valido")
         String ctype) {
 }
