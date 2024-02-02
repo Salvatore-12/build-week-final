@@ -4,7 +4,8 @@ export const ActionTypes = {
   SET_USER_TOKEN: "SET_USER_TOKEN",
   SET_USER_DATA: "SET_USER_DATA",
   SET_LOADING: "SET_LOADING",
-  SET_CLIENTS_DATA: "SET_CLIENTS_DATA"
+  SET_CLIENTS_DATA: "SET_CLIENTS_DATA",
+  SET_BILLS_DATA: "SET_BILLS_DATA"
 };
 
 export const setUserToken = (token) => ({
@@ -24,6 +25,11 @@ export const setLoading = (bool) => ({
 
 export const setClienstData = (data) => ({
   type: ActionTypes.SET_CLIENTS_DATA,
+  payload: data
+});
+
+export const setBillsData = (data) => ({
+  type: ActionTypes.SET_BILLS_DATA,
   payload: data
 });
 
@@ -110,7 +116,48 @@ export const changePassword = (token, password) => async (dispatch) => {
   } catch (error) {}
 };
 
-export const fetchClientsData = (userId) => async (dispatch) => {
-  const URL = "http://localhost:3001/users/me";
-  //COMPLETARE APPENA VIENE MESSO A DISPOSIZIONE L'ENDPOINT CON LA QUERY GIUSTA
+export const fetchClientsData = (token) => async (dispatch) => {
+  const URL = "http://localhost:3001/users/me/clients";
+  try {
+    const response = await fetch(URL, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json"
+      }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      dispatch(setClienstData(data));
+      return data;
+    } else {
+      throw new Error("problema nella fetch");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const fetchBillsFromClient = (token, clientId) => async (dispatch) => {
+  const URL = `http://localhost:3001/Bill/client/${clientId}`;
+  try {
+    const response = await fetch(URL, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json"
+      }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      dispatch(setBillsData(data));
+      return data;
+    } else {
+      throw new Error("problema nella fetch");
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };

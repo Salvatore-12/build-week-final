@@ -109,6 +109,7 @@ public class ClientRunner implements CommandLineRunner {
         alexClient.setNumber(1L);
         alexClient.setCtype(CTYPE.SPA);
         alexClient.setUser(alex);
+        alexClient.setName(faker.company().name());
         clientsDAO.save(alexClient);
         Bill fatturaAlex = new Bill(LocalDate.of(2023, 5, 26), 500000, 5, alexClient);
         billsDAO.save(fatturaAlex);
@@ -127,6 +128,7 @@ public class ClientRunner implements CommandLineRunner {
             client.setAnnualTurnOver(annualTurnOver);
             client.setPec(pec);
             client.setNumber(number);
+            client.setName(faker.company().name());
             int lenght = CTYPE.values().length;
             Random rmd = new Random();
             CTYPE ctype = CTYPE.values()[rmd.nextInt(lenght)];

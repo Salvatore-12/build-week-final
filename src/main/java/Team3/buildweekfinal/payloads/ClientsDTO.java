@@ -10,6 +10,8 @@ import java.time.LocalDate;
 public record ClientsDTO(
         @Email(message = "campo email obbligatorio")
         String email,
+        @NotEmpty
+        String name,
         @NotNull(message = "inserire la data di inserimento")
         LocalDate insertDate,
         @NotNull(message = "inserire la data del ultimo controllo")

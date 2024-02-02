@@ -63,6 +63,7 @@ public class ClientService
         addressList.add(addressDAO.findById(idAddress).orElseThrow(()->new NotFoundException(idAddress)));
         newclient.setAddress(addressList);
         newclient.setEmail(body.email());
+        newclient.setName(body.name());
         newclient.setInsertDate(body.insertDate());
         newclient.setLastCall(body.lastCall());
         newclient.setAnnualTurnOver(body.annualTurnOver());
@@ -81,6 +82,7 @@ public class ClientService
         found.setAnnualTurnOver(body.annualTurnOver());
         found.setPec(body.pec());
         found.setNumber(body.number());
+        found.setName(body.name());
         found.setCtype(CTYPE.valueOf(body.ctype()));
         return clientsDAO.save(found);
     }

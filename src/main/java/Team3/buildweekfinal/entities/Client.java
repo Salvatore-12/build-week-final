@@ -24,6 +24,7 @@ public class Client
     @Id
     @GeneratedValue
     private UUID piva;
+    private String name;
     private String email;
     private LocalDate insertDate;
     private LocalDate lastCall;
