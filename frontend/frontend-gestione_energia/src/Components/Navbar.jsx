@@ -37,7 +37,13 @@ const NavBar = () => {
             >
               Home
             </Nav.Link>
-            <Nav.Link href="#link" className="text-white">
+            <Nav.Link
+              href=""
+              className="text-white"
+              onClick={() => {
+                navigate("/prices");
+              }}
+            >
               Prices
             </Nav.Link>
           </Nav>
@@ -45,7 +51,7 @@ const NavBar = () => {
             {userData === null ? (
               <>
                 <Nav.Link
-                  href="#"
+                  href=""
                   className="text-white"
                   onClick={() => {
                     navigate("/login");
@@ -65,7 +71,11 @@ const NavBar = () => {
                 </Nav.Link>
               </>
             ) : (
-              <div>
+              <div
+                className="d-flex align-items-center gap-2"
+                role="button"
+                onClick={() => navigate("/me")}
+              >
                 <img
                   src={userData.avatar}
                   alt="avatar"
@@ -73,6 +83,7 @@ const NavBar = () => {
                   height={30}
                   className="rounded"
                 />
+                <span className="text-white">{userData.username}</span>
               </div>
             )}
           </Nav>

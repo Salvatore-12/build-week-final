@@ -42,7 +42,6 @@ public class ClientController
             return clientService.save(idBill,idUser,idAddress,body);
         }
     }
-
     @GetMapping("/{piva}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -65,22 +64,7 @@ public class ClientController
     {
         clientService.findByIdAndDelete(id);
     }
-    @GetMapping("/me")
-    public Client getCurrentClient(@AuthenticationPrincipal Client currentClient)
-    {
-        return clientService.findById(currentClient.getPiva());
-    }
 
-    @PutMapping("/me")
-    public Client modifyClient(@AuthenticationPrincipal Client currentClient, ClientsDTO modifyClientPayload)
-    {
-        return clientService.findByIdAndUpdate(currentClient.getPiva(),modifyClientPayload);
-    }
-    @DeleteMapping("/me")
-    public void deleteClient(@AuthenticationPrincipal Client currentClient)
-    {
-        clientService.findByIdAndDelete(currentClient.getPiva());
-    }
     //**********************************QUERY BLOCCO 1************************************************
     @GetMapping("/findByAnnualTurnOver")
     public Client findByAnnualTurnOver(@RequestParam double annualTurnOver)

@@ -11,6 +11,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserData, setLoading } from "./Redux/actions";
 import OverlayLoading from "./Components/OverlayLoading";
+import Dashboard from "./Components/Dashboard.jsx";
+import PersonalProfile from "./Components/PersonalProfile.jsx";
+import PricesPage from "./Components/PricesPage.jsx";
 
 function App() {
   const token = useSelector((state) => state.token);
@@ -32,9 +35,12 @@ function App() {
     <BrowserRouter>
       <OverlayLoading />
       <Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/me" element={<PersonalProfile />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/prices" element={<PricesPage />} />
       </Routes>
     </BrowserRouter>
   );
