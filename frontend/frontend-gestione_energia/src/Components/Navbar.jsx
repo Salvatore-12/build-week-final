@@ -65,7 +65,11 @@ const NavBar = () => {
                 </Nav.Link>
               </>
             ) : (
-              <div>
+              <div
+                className="d-flex align-items-center gap-2"
+                role="button"
+                onClick={() => navigate("/me")}
+              >
                 <img
                   src={userData.avatar}
                   alt="avatar"
@@ -73,6 +77,7 @@ const NavBar = () => {
                   height={30}
                   className="rounded"
                 />
+                <span className="text-white">{userData.username}</span>
               </div>
             )}
           </Nav>
