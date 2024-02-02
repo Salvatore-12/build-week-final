@@ -1,9 +1,10 @@
 package Team3.buildweekfinal.controllers;
 
+import Team3.buildweekfinal.entities.Client;
 import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.BadRequestException;
 import Team3.buildweekfinal.payloads.UpdateExistingUserDTO;
-import Team3.buildweekfinal.payloads.UsersDTO;
+import Team3.buildweekfinal.payloads.UserDTO;
 import Team3.buildweekfinal.payloads.UsersResponseDTO;
 import Team3.buildweekfinal.services.AuthService;
 import Team3.buildweekfinal.services.ClientService;
@@ -37,21 +38,27 @@ public class UserController {
         return currentUser;
     }
 
-    @PutMapping("/me")
-    public User updateUser(@AuthenticationPrincipal User currentUser, @RequestBody UpdateExistingUserDTO body) {
-        return authService.updateUser(currentUser, body);
+    @PutMapping("/me/updateProfile")
+    public User updateUser(@AuthenticationPrincipal User currentUser, @RequestBody @Validated UpdateExistingUserDTO body, BindingResult validation) {
+        if (validation.hasErrors()) {
+            throw new BadRequestException(validation.getAllErrors());
+        } else {
+            return authService.updateUser(currentUser, body);
+        }
     }
 
     @PostMapping("/me/upload")
     public String uploadAvatar(@RequestParam("avatar") MultipartFile file, @AuthenticationPrincipal User currentUser) throws IOException {
         return usersService.uploadPicture(file, currentUser.getIdUser());
     }
-//    @GetMapping("/me/{bills}")
-//    @PreAuthorize("hasAnyAuthority('USER')")
-//    public List<Bill> getAllBills(@AuthenticationPrincipal User currentUser){
-//
-//        return currentUser;
-//    }
+
+    @GetMapping("/me/clients")
+    public Page<Client> getPersonalClients(@AuthenticationPrincipal User currentUser,
+                                           @RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "10") int size,
+                                           @RequestParam(defaultValue = "piva") String orderBy) {
+        return clientService.findPersonalClients(page, size, orderBy, currentUser);
+    }
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -63,7 +70,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UsersResponseDTO saveUser(@RequestBody @Validated UsersDTO body, BindingResult validation) {
+    public UsersResponseDTO saveUser(@RequestBody @Validated UserDTO body, BindingResult validation) {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors());
         } else {
@@ -89,4 +96,5 @@ public class UserController {
     public String uploadEventImage(@RequestParam("avatar") MultipartFile file, @PathVariable(required = true) UUID userId) throws IOException {
         return usersService.uploadPicture(file,userId);
     }
+
 }

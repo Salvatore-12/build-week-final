@@ -4,7 +4,7 @@ import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.BadRequestException;
 import Team3.buildweekfinal.payloads.UserLoginDTO;
 import Team3.buildweekfinal.payloads.UserLoginResponseDTO;
-import Team3.buildweekfinal.payloads.UsersDTO;
+import Team3.buildweekfinal.payloads.UserDTO;
 import Team3.buildweekfinal.payloads.UsersResponseDTO;
 import Team3.buildweekfinal.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public UsersResponseDTO createUser(@RequestBody @Validated UsersDTO newUserPayload, BindingResult validation) {
+    public UsersResponseDTO createUser(@RequestBody @Validated UserDTO newUserPayload, BindingResult validation) {
         System.out.println(validation);
         if (validation.hasErrors()) {
             System.out.println(validation.getAllErrors());

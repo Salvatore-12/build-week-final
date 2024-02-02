@@ -91,6 +91,12 @@ public class ClientService
                 .get("url");
         return url;
     }
+    public Page<Client> findPersonalClients(int page,int size,String orderBy, User currentUser){
+        if(size>=100)size=100;
+        Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy));
+        return clientsDAO.findByUserIdUser(pageable, currentUser.getIdUser());
+
+    }
     //****************************************************************QUERY****************************************************************
     public Client findByAnnualTurnOver(double annualTurnOver)
     {

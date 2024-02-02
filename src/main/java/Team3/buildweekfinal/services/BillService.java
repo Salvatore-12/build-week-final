@@ -1,10 +1,8 @@
 package Team3.buildweekfinal.services;
 
 import Team3.buildweekfinal.entities.Bill;
-import Team3.buildweekfinal.entities.Client;
 import Team3.buildweekfinal.exceptions.NotFoundException;
 import Team3.buildweekfinal.payloads.BillDTO;
-import Team3.buildweekfinal.payloads.UsersDTO;
 import Team3.buildweekfinal.repositories.BillsDAO;
 import Team3.buildweekfinal.repositories.ClientsDAO;
 import org.springframework.beans.factory.annotation.Autowired;

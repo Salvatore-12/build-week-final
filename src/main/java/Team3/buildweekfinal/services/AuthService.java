@@ -5,7 +5,7 @@ import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.UnauthorizedException;
 import Team3.buildweekfinal.payloads.UpdateExistingUserDTO;
 import Team3.buildweekfinal.payloads.UserLoginDTO;
-import Team3.buildweekfinal.payloads.UsersDTO;
+import Team3.buildweekfinal.payloads.UserDTO;
 import Team3.buildweekfinal.exceptions.BadRequestException;
 import Team3.buildweekfinal.repositories.UsersDAO;
 import Team3.buildweekfinal.security.JWTTools;
@@ -28,13 +28,13 @@ public class AuthService
     @Autowired
     private JWTTools jwtTools;
 
-    public User save(UsersDTO body)
+    public User save(UserDTO body)
     {
         usersDAO.findByEmail(body.email()).ifPresent(user ->
         {
             throw new BadRequestException("l' email " + user.getEmail() +" è già in uso");
         });
-        User newUser=new User();
+        User newUser = new User();
         newUser.setName(body.name());
         newUser.setSurname(body.surname());
         newUser.setUsername(body.username());

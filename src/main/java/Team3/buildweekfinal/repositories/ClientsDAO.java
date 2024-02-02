@@ -4,6 +4,8 @@ import Team3.buildweekfinal.entities.Bill;
 import Team3.buildweekfinal.entities.CTYPE;
 import Team3.buildweekfinal.entities.Client;
 import Team3.buildweekfinal.entities.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,5 +22,5 @@ public interface ClientsDAO extends JpaRepository<Client,UUID>
     Optional<Bill> findByEmail(String email);
     Optional<Bill> findByCtype(CTYPE ctype);
 
-
+    Page<Client> findByUserIdUser(Pageable pageable, UUID idUser);
 }
