@@ -38,8 +38,19 @@ public class UserController {
     private AddressService addressService;
 
     @GetMapping("/me")
-    public User getProfile(@AuthenticationPrincipal User currentUser){
+    public User getProfile(@AuthenticationPrincipal User currentUser) {
         return currentUser;
+    }
+
+    @GetMapping("/me/getClients")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Page<Client> getAllClients(@AuthenticationPrincipal User currentUser,
+                                      @RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int size,
+                                      @RequestParam String orderBy)
+
+    {
+        return clientService.getClients(page, size, orderBy);
     }
 
     @PutMapping("/me/updateProfile")
@@ -63,11 +74,12 @@ public class UserController {
                                            @RequestParam(defaultValue = "piva") String orderBy) {
         return clientService.findPersonalClients(page, size, orderBy, currentUser);
     }
+
     @GetMapping("/me/clients/addresses")
     public Page<Address> getPersonalAddresses(@AuthenticationPrincipal User currentUser,
                                               @RequestParam(defaultValue = "0") int page,
                                               @RequestParam(defaultValue = "10") int size,
-                                              @RequestParam(defaultValue = "idAddress") String orderBy){
+                                              @RequestParam(defaultValue = "idAddress") String orderBy) {
         return addressService.findPersonalAddresses(page, size, orderBy, currentUser);
     }
 
@@ -89,7 +101,7 @@ public class UserController {
             return new UsersResponseDTO(newUser.getIdUser());
         }
     }
-    
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public User findById(@PathVariable UUID id) {
@@ -105,7 +117,7 @@ public class UserController {
 
     @PostMapping("/{userId}/upload")
     public String uploadEventImage(@RequestParam("avatar") MultipartFile file, @PathVariable(required = true) UUID userId) throws IOException {
-        return usersService.uploadPicture(file,userId);
+        return usersService.uploadPicture(file, userId);
     }
 
 }
