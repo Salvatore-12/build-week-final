@@ -8,21 +8,23 @@ import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.UnauthorizedException;
 
 import java.util.Date;
+
 @Component
 public class JWTTools {
     @Value("${spring.jwt.secret}")
     private String secret;
 
-    public String createToken(User user){
-        return Jwts.builder().subject(String.valueOf(user.getIdUser())). // Id utente a cui appartiene il token
+    public String createToken(User user) {
+        return Jwts.builder().subject(String.valueOf(user.getIdUser())).// Id utente a cui appartiene il token
+                claim("role", user.getRole()).
                 issuedAt(new Date(System.currentTimeMillis())) // Data di rilascio del token
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 10)) // Data di scadenza
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes())) // Firma del token
                 .compact(); // Il token viene compattato in una stringa.
     }
 
-    public void verifyToken(String token){
-        try{
+    public void verifyToken(String token) {
+        try {
             // Jwts.parser(): Questo è il punto di partenza per il processo di verifica del token JWT.
             // parser() restituisce un oggetto parser che verrà utilizzato per decodificare e verificare il token.
             // .verifyWith(Keys.hmacShaKeyFor(secret.getBytes())): Questo metodo specifica la chiave segreta utilizzata per verificare la firma del token JWT.
@@ -30,12 +32,12 @@ public class JWTTools {
             // .build(): Viene chiamato per costruire l'oggetto di verifica del token JWT, che conterrà tutte le informazioni necessarie per verificare il token.
             // .parse(token): Viene utilizzato per analizzare e verificare il token JWT.
             Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).build().parse(token);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new UnauthorizedException("Sembra che ci siano problemi con il tuo accesso, prova di nuovo.");
         }
     }
 
-    public String extractIdFromToken(String token){
+    public String extractIdFromToken(String token) {
         return Jwts.parser().
                 verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
                 .build()
