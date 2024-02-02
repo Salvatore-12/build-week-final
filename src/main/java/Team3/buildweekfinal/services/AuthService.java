@@ -9,13 +9,13 @@ import Team3.buildweekfinal.payloads.UserDTO;
 import Team3.buildweekfinal.exceptions.BadRequestException;
 import Team3.buildweekfinal.repositories.UsersDAO;
 import Team3.buildweekfinal.security.JWTTools;
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthService
-{
+public class AuthService {
     @Autowired
     private UsersService usersService;
 
@@ -28,11 +28,10 @@ public class AuthService
     @Autowired
     private JWTTools jwtTools;
 
-    public User save(UserDTO body)
-    {
+    public User save(UserDTO body) {
         usersDAO.findByEmail(body.email()).ifPresent(user ->
         {
-            throw new BadRequestException("l' email " + user.getEmail() +" è già in uso");
+            throw new BadRequestException("l' email " + user.getEmail() + " è già in uso");
         });
         User newUser = new User();
         newUser.setName(body.name());
@@ -54,23 +53,35 @@ public class AuthService
             throw new UnauthorizedException("Credenziali non valide!");
         }
     }
+
     public User updateUser(User currentUser, UpdateExistingUserDTO body) {
         User found = usersService.findById(currentUser.getIdUser());
         if (body.name() != null) {
-            found.setName(body.name());
+            if (!body.name().isEmpty()) {
+                found.setName(body.name());
+            }
         }
         if (body.surname() != null) {
-            found.setSurname(body.surname());
+            if (!body.surname().isEmpty()) {
+                found.setSurname(body.surname());
+            }
         }
         if (body.username() != null) {
-            found.setUsername(body.username());
+            if (!body.username().isEmpty()) {
+                found.setUsername(body.username());
+            }
         }
         if (body.email() != null) {
-            found.setEmail(body.email());
+            if (!body.email().isEmpty()) {
+                found.setEmail(body.email());
+            }
         }
         if (body.password() != null) {
-            found.setPassword(bcrypt.encode(body.password()));
+            if (!body.password().isEmpty()) {
+                found.setPassword(bcrypt.encode(body.password()));
+            }
         }
-        return  usersDAO.save(found);
+        return usersDAO.save(found);
     }
+
 }

@@ -1,6 +1,8 @@
 package Team3.buildweekfinal.services;
 
 import Team3.buildweekfinal.entities.Address;
+import Team3.buildweekfinal.entities.Client;
+import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.NotFoundException;
 import Team3.buildweekfinal.payloads.AddressDTO;
 import Team3.buildweekfinal.repositories.AddressDAO;
@@ -48,6 +50,12 @@ public class AddressService {
 
     public void deleteAddress (UUID id){
         addressDAO.deleteById(id);
+    }
+
+    public Page<Address> findPersonalAddresses (int page,int size,String orderBy, User currentUser){
+        if(size>=100)size=100;
+        Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy));
+        return addressDAO.findByClientPiva(pageable, currentUser.getIdUser());
     }
 
 

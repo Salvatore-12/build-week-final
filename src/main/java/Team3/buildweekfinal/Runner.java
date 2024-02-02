@@ -55,7 +55,6 @@ public class Runner implements CommandLineRunner {
                 case "y" -> {
                     createAdmins();
                     createUsers();
-                    createAddresses();
                     errors = false;
                 }
                 case "n" -> errors = false;
@@ -102,32 +101,6 @@ public class Runner implements CommandLineRunner {
             user.setPassword(password);
             usersDAO.save(user);
         }
-    }
-
-    public void createAddresses() {
-        for (int i = 0; i < 30; i++) {
-            String street = faker.address().streetName();
-            Integer cv = Integer.parseInt(faker.address().buildingNumber());
-            Area area = getRandomArea();
-            String cap = area.getProvinceCode();
-            addressDAO.save(Address.builder()
-                    .address(street)
-                    .cv(cv)
-                    .cap(cap)
-                    .city(area.getProvince().getProvinceName())
-                    .area(area).build());
-        }
-    }
-
-    private Area getRandomArea() {
-        List<Area> areas = areasDAO.findAll();
-        if (areas.isEmpty()) {
-            throw new IllegalStateException(
-                    "Comuni non trovati.");
-        }
-        Random random = new Random();
-        int randomIndex = random.nextInt(areas.size());
-        return areas.get(randomIndex);
     }
 
 }

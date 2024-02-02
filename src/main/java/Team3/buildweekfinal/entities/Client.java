@@ -1,6 +1,8 @@
 package Team3.buildweekfinal.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +34,7 @@ public class Client
     private CTYPE ctype;
     @ManyToOne
     private User user;
+    @JsonBackReference
     @OneToMany(mappedBy = "client")
     private List<Address> address=new ArrayList<>();
     @JsonIgnore

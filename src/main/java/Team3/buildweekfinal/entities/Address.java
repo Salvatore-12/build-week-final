@@ -1,5 +1,7 @@
 package Team3.buildweekfinal.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +24,7 @@ public class Address
     private String cap;
     @ManyToOne
     private Area area;
+    @JsonManagedReference
     @ManyToOne
     private Client client;
 }

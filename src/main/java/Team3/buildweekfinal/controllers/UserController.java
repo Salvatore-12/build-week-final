@@ -1,11 +1,13 @@
 package Team3.buildweekfinal.controllers;
 
+import Team3.buildweekfinal.entities.Address;
 import Team3.buildweekfinal.entities.Client;
 import Team3.buildweekfinal.entities.User;
 import Team3.buildweekfinal.exceptions.BadRequestException;
 import Team3.buildweekfinal.payloads.UpdateExistingUserDTO;
 import Team3.buildweekfinal.payloads.UserDTO;
 import Team3.buildweekfinal.payloads.UsersResponseDTO;
+import Team3.buildweekfinal.services.AddressService;
 import Team3.buildweekfinal.services.AuthService;
 import Team3.buildweekfinal.services.ClientService;
 import Team3.buildweekfinal.services.UsersService;
@@ -32,6 +34,8 @@ public class UserController {
     private AuthService authService;
     @Autowired
     private ClientService clientService;
+    @Autowired
+    private AddressService addressService;
 
     @GetMapping("/me")
     public User getProfile(@AuthenticationPrincipal User currentUser){
@@ -58,6 +62,13 @@ public class UserController {
                                            @RequestParam(defaultValue = "10") int size,
                                            @RequestParam(defaultValue = "piva") String orderBy) {
         return clientService.findPersonalClients(page, size, orderBy, currentUser);
+    }
+    @GetMapping("/me/clients/addresses")
+    public Page<Address> getPersonalAddresses(@AuthenticationPrincipal User currentUser,
+                                              @RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "10") int size,
+                                              @RequestParam(defaultValue = "idAddress") String orderBy){
+        return addressService.findPersonalAddresses(page, size, orderBy, currentUser);
     }
 
     @GetMapping

@@ -1,17 +1,19 @@
 package Team3.buildweekfinal.payloads;
 
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 public record UpdateExistingUserDTO(
-        @NotEmpty
+
         String name,
-        @NotEmpty
+
         String surname,
-        @NotEmpty
+
         String username,
-        @NotEmpty
+
         String email,
-        @NotEmpty
+
         String password) {
 }

@@ -21,9 +21,13 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public UserLoginResponseDTO login(@RequestBody UserLoginDTO body) {
-        String accessToken = authService.authenticateUser(body);
-        return new UserLoginResponseDTO(accessToken);
+    public UserLoginResponseDTO login(@RequestBody @Validated UserLoginDTO body, BindingResult validation) {
+        if(validation.hasErrors()){
+            throw new BadRequestException(validation.getAllErrors());
+        }else {
+            String accessToken = authService.authenticateUser(body);
+            return new UserLoginResponseDTO(accessToken);
+        }
     }
 
     @PostMapping("/register")
@@ -31,8 +35,7 @@ public class AuthController {
     public UsersResponseDTO createUser(@RequestBody @Validated UserDTO newUserPayload, BindingResult validation) {
         System.out.println(validation);
         if (validation.hasErrors()) {
-            System.out.println(validation.getAllErrors());
-            throw new BadRequestException("Ci sono errori nel payload!");
+            throw new BadRequestException(validation.getAllErrors());
         } else {
             User newUser = authService.save(newUserPayload);
 

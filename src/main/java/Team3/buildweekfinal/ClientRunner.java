@@ -1,9 +1,7 @@
 package Team3.buildweekfinal;
 
 import Team3.buildweekfinal.entities.*;
-import Team3.buildweekfinal.repositories.BillsDAO;
-import Team3.buildweekfinal.repositories.ClientsDAO;
-import Team3.buildweekfinal.repositories.UsersDAO;
+import Team3.buildweekfinal.repositories.*;
 import Team3.buildweekfinal.services.ClientService;
 import Team3.buildweekfinal.services.UsersService;
 import com.github.javafaker.Faker;
@@ -33,6 +31,10 @@ public class ClientRunner implements CommandLineRunner {
     private PasswordEncoder bcrypt;
     @Autowired
     private BillsDAO billsDAO;
+    @Autowired
+    private AddressDAO addressDAO;
+    @Autowired
+    AreasDAO areasDAO;
 
     Faker faker = new Faker(new Locale("it"));
 
@@ -41,11 +43,12 @@ public class ClientRunner implements CommandLineRunner {
         Scanner scanner = new Scanner(System.in);
         boolean errors = false;
         do {
-            System.out.println("Vuoi Procedere Con la Creazione Dei Clienti (y/n)");
+            System.out.println("Vuoi Procedere Con la Creazione Dei Clienti / Indirizzi (y/n)");
             String choice = scanner.nextLine();
             switch (choice.toLowerCase()) {
                 case "y" -> {
                     createClients();
+                    createAddresses();
                     errors = false;
                 }
                 case "n" -> errors = false;
@@ -64,6 +67,7 @@ public class ClientRunner implements CommandLineRunner {
         return userList.get(rmdIndex);
 
     }
+
 
     public double getRadomNumberDouble() {
         Random rmd = new Random();
@@ -106,7 +110,7 @@ public class ClientRunner implements CommandLineRunner {
         alexClient.setCtype(CTYPE.SPA);
         alexClient.setUser(alex);
         clientsDAO.save(alexClient);
-        Bill fatturaAlex = new Bill(LocalDate.of(2023,5,26),500000,5,alexClient);
+        Bill fatturaAlex = new Bill(LocalDate.of(2023, 5, 26), 500000, 5, alexClient);
         billsDAO.save(fatturaAlex);
 
         for (int i = 0; i < 10; i++) {
@@ -131,5 +135,44 @@ public class ClientRunner implements CommandLineRunner {
             clientsDAO.save(client);
 
         }
+
+    }
+
+    public void createAddresses() {
+        for (int i = 0; i < 30; i++) {
+            String street = faker.address().streetName();
+            Integer cv = Integer.parseInt(faker.address().buildingNumber());
+            Area area = getRandomArea();
+            String cap = area.getProvinceCode();
+            addressDAO.save(Address.builder()
+                    .address(street)
+                    .cv(cv)
+                    .cap(cap)
+                    .client(getRandomClientFromDb())
+                    .city(area.getProvince().getProvinceName())
+                    .area(area).build());
+        }
+    }
+
+    private Area getRandomArea() {
+        List<Area> areas = areasDAO.findAll();
+        if (areas.isEmpty()) {
+            throw new IllegalStateException(
+                    "Comuni non trovati.");
+        }
+        Random random = new Random();
+        int randomIndex = random.nextInt(areas.size());
+        return areas.get(randomIndex);
+    }
+
+    private Client getRandomClientFromDb() {
+        List<Client> clients = clientsDAO.findAll();
+        if (clients.isEmpty()) {
+            throw new IllegalStateException(
+                    "Aziende Non Trovate");
+        }
+        Random random = new Random();
+        int randomIndex = random.nextInt(clients.size());
+        return clients.get(randomIndex);
     }
 }
