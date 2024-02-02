@@ -66,20 +66,20 @@ public class ClientController
         clientService.findByIdAndDelete(id);
     }
     @GetMapping("/me")
-    public Client getCurrentClient(@AuthenticationPrincipal Client currentClient)
+    public Client getCurrentClient(@PathVariable UUID idClient)
     {
-        return clientService.findById(currentClient.getPiva());
+        return clientService.findById(idClient);
     }
 
     @PutMapping("/me")
-    public Client modifyClient(@AuthenticationPrincipal Client currentClient, ClientsDTO modifyClientPayload)
+    public Client modifyClient(@PathVariable UUID idClient, ClientsDTO modifyClientPayload)
     {
-        return clientService.findByIdAndUpdate(currentClient.getPiva(),modifyClientPayload);
+        return clientService.findByIdAndUpdate(idClient,modifyClientPayload);
     }
     @DeleteMapping("/me")
-    public void deleteClient(@AuthenticationPrincipal Client currentClient)
+    public void deleteClient(@PathVariable UUID idClient)
     {
-        clientService.findByIdAndDelete(currentClient.getPiva());
+        clientService.findByIdAndDelete(idClient);
     }
     //**********************************QUERY BLOCCO 1************************************************
     @GetMapping("/findByAnnualTurnOver")

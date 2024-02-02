@@ -5,6 +5,7 @@ import Team3.buildweekfinal.entities.CTYPE;
 import Team3.buildweekfinal.entities.Client;
 import Team3.buildweekfinal.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -20,5 +21,6 @@ public interface ClientsDAO extends JpaRepository<Client,UUID>
     Optional<Bill> findByEmail(String email);
     Optional<Bill> findByCtype(CTYPE ctype);
 
+ 
 
 }
