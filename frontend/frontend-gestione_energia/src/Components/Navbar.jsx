@@ -37,7 +37,13 @@ const NavBar = () => {
             >
               Home
             </Nav.Link>
-            <Nav.Link href="#link" className="text-white">
+            <Nav.Link
+              href=""
+              className="text-white"
+              onClick={() => {
+                navigate("/prices");
+              }}
+            >
               Prices
             </Nav.Link>
           </Nav>
@@ -45,7 +51,7 @@ const NavBar = () => {
             {userData === null ? (
               <>
                 <Nav.Link
-                  href="#"
+                  href=""
                   className="text-white"
                   onClick={() => {
                     navigate("/login");
