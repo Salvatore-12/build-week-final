@@ -1,0 +1,29 @@
+input[type="text"],
+input[type="password"] {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  color: white;
+  transition: border-color 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: #4044ed !important;
+}
+
+small {
+  transition: transform 0.3s ease;
+}
+
+small:hover {
+  transform: scale(1.02);
+}
+
+.column {
+  background-color: #27262c !important;
+}
+
+img {
+  box-shadow: -1px 0px 10px -2px #4044ed;
+}

@@ -65,7 +65,11 @@ const NavBar = () => {
                 </Nav.Link>
               </>
             ) : (
-              <div className="d-flex align-items-center gap-2" role="button">
+              <div
+                className="d-flex align-items-center gap-2"
+                role="button"
+                onClick={() => navigate("/me")}
+              >
                 <img
                   src={userData.avatar}
                   alt="avatar"

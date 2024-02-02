@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { useSelector } from "react-redux";
 import hero from "../assets/hero.webp";
 import heroUnlogged from "../assets/hero-unlogged.webp";
@@ -42,19 +43,19 @@ const HeroSection = () => {
                 ? `Vuoi visualizzare un resoconto personale?`
                 : `Unisciti a noi e proiettiamoci insieme verso il futuro`}
             </h4>
-            <a
+            <button
               className="btn btn-outline-light btn-lg border border-0 border-bottom"
-              href=""
-              role="button"
               style={{
                 backgroundColor: "rgba(64, 68, 237, 0.2)",
                 boxShadow: "-1px 1px 11px 1px #000000",
                 textShadow: "0px 0px 3px #000000"
               }}
-              onClick={() => navigate("/register")}
+              onClick={() =>
+                !isLogged ? navigate("/register") : navigate("/dashboard")
+              }
             >
               {isLogged ? `Apri Dashboard` : `Registrati ora`}
-            </a>
+            </button>
           </div>
         </div>
       </div>
