@@ -42,6 +42,12 @@ public class UserController {
         return currentUser;
     }
 
+    @GetMapping("/me/admin")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public User getProfileAdmin(@AuthenticationPrincipal User currentUser) {
+        return currentUser;
+    }
+
     @GetMapping("/me/getClients")
     @PreAuthorize("hasAuthority('ADMIN')")
     public Page<Client> getAllClients(@AuthenticationPrincipal User currentUser,
