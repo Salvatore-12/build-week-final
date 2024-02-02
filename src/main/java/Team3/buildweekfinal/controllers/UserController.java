@@ -42,6 +42,15 @@ public class UserController {
         return currentUser;
     }
 
+    @GetMapping("/me/getClients")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Page<Client> getAllClients(@AuthenticationPrincipal User currentUser,
+                                      @RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int size,
+                                      @RequestParam(defaultValue = "name") String orderBy) {
+        return clientService.getClients(page, size, orderBy);
+    }
+
     @PutMapping("/me/updateProfile")
     public User updateUser(@AuthenticationPrincipal User currentUser, @RequestBody @Validated UpdateExistingUserDTO body, BindingResult validation) {
         if (validation.hasErrors()) {

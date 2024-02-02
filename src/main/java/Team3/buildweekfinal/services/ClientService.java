@@ -39,7 +39,10 @@ public class ClientService
 
     public Page<Client> getClients(int page, int size, String orderBy)
     {
-        if(size<=100)size=100;
+        if (size < 0)
+            size = 10;
+        if (size > 100)
+            size = 20;
         Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy));
         return clientsDAO.findAll(pageable);
     }
