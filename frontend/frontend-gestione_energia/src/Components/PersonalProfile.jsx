@@ -4,6 +4,8 @@ import "./styles/Profile.css";
 import { useEffect, useState } from "react";
 import { changeName, changePassword } from "../Redux/actions";
 import Navbar from "./Navbar.jsx";
+import { useNavigate } from "react-router-dom";
+import React, { Component } from "react";
 
 const PersonalProfile = () => {
   const token = useSelector((state) => state.token);
@@ -51,19 +53,46 @@ const PersonalProfile = () => {
     }
   };
 
-  useEffect(() => {
-    if (password) {
-      if (password.trim() !== "") {
-        if (password.length > 6) {
-          setPasswordSecurity(passwordSecurity ? passwordSecurity + 1 : 1);
-        }
-        if (password.match(format)) {
-          setPasswordSecurity(passwordSecurity ? passwordSecurity + 1 : 1);
-        }
-      } else {
-        setPasswordSecurity(null);
-      }
+  const getPasswordSecurityStatus = () => {
+    return password?.length > 0
+      ? passwordSecurity === 1
+        ? "La password è ok."
+        : passwordSecurity > 1
+        ? "La password è sicurissima!"
+        : passwordSecurity <= 0
+        ? "La password non è sicura."
+        : null
+      : null;
+  };
+
+  const navigate = useNavigate();
+  const logOut = () => {
+    localStorage.removeItem("token");
+    navigate("/home");
+    window.location.reload();
+  };
+
+  const deleteProfile = () => {
+    if (
+      !window.confirm(
+        "Sei sicuro? eliminando il tuo profilo, ti disiscreverai dal nostro servizio. perderai tutte le azienda salvate con i relativi dati. l'azione non è reversibile."
+      )
+    ) {
+      return;
+    } else {
+      //elimina profilo
     }
+  };
+
+  useEffect(() => {
+    let score = password?.length > 6 ? 1 : 0;
+
+    const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (specialChars.test(password)) {
+      score += 1;
+    }
+
+    setPasswordSecurity(score);
   }, [password]);
 
   return (
@@ -86,6 +115,25 @@ const PersonalProfile = () => {
                   <small role="button" onClick={() => setOption(2)}>
                     Password
                   </small>
+                  <div
+                    id="profile-danger-actions"
+                    className="d-flex flex-column gap-1"
+                  >
+                    <small
+                      role="button"
+                      className="text-warning opacity-50 fw-semibold"
+                      onClick={() => logOut()}
+                    >
+                      LOGOUT
+                    </small>
+                    <small
+                      role="button"
+                      className="text-danger opacity-50 fw-semibold"
+                      onClick={() => deleteProfile()}
+                    >
+                      ELIMINA
+                    </small>
+                  </div>
                 </div>
               </Col>
               <Col className="rounded ps-4 pt-3 h-50 column">
@@ -141,7 +189,7 @@ const PersonalProfile = () => {
                         }}
                       />
                       <small className="opacity-75">
-                        [CONTROLLO QUALITÀ PASSWORD]
+                        {getPasswordSecurityStatus()}
                       </small>
                       <input
                         type="password"

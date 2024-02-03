@@ -91,7 +91,7 @@ export const fetchUserData = (token) => async (dispatch) => {
 };
 
 export const changeName = (token, body) => async (dispatch) => {
-  const URL = "http://localhost:3001/users/me";
+  const URL = "http://localhost:3001/users/me/updateProfile";
   try {
     const response = await fetch(URL, {
       method: "PUT",

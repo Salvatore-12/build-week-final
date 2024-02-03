@@ -2,7 +2,12 @@ import { Col, Container, Row, Card, Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import "./styles/Dashboard.css";
 import { useEffect, useState } from "react";
-import { fetchBillsFromClient, fetchClientsData } from "../Redux/actions";
+import {
+  fetchBillsFromClient,
+  fetchClientsData,
+  setLoading
+} from "../Redux/actions";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const userData = useSelector((state) => state.data);
@@ -10,6 +15,7 @@ const Dashboard = () => {
   const clientsData = useSelector((state) => state.clientsData);
   const billsData = useSelector((state) => state.billsData);
 
+  const [clientsCount, setClientsCount] = useState(0);
   const [clientSelected, setClientSelected] = useState(null);
   const [billSelected, setBillSelected] = useState(null);
 
@@ -19,32 +25,48 @@ const Dashboard = () => {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchClientsData(token)).then((clientInfo) => {
       if (clientInfo) {
-        setClientSelected(clientInfo.content[0]);
-      }
-      dispatch(fetchBillsFromClient(token, clientInfo?.content[0].piva)).then(
-        (bills) => {
-          if (bills) {
-            setBillSelected(bills.content[0]);
-          }
+        if (clientInfo.content.length > 0) {
+          setClientsCount(clientInfo.content.length);
+          setClientSelected(clientInfo.content[0]);
+          dispatch(
+            fetchBillsFromClient(token, clientInfo?.content[0]?.piva)
+          ).then((bills) => {
+            if (bills) {
+              setBillSelected(bills.content[0]);
+            }
+          });
+        } else {
+          setClientsCount(0);
         }
-      );
+      }
     });
   }, []);
 
   let clientInfo;
   if (clientsData) {
-    if (clientsData.content.length > 0) {
+    if (clientsCount > 0) {
       clientInfo = clientsData.content[0];
     }
   }
 
   useEffect(() => {
-    dispatch(fetchBillsFromClient(token, clientSelected?.piva));
+    if (clientSelected) {
+      dispatch(fetchBillsFromClient(token, clientSelected?.piva));
+    }
   }, [clientSelected]);
+
+  const isReadyAndWithoutErrors = () => {
+    return userData !== null &&
+      clientsData?.content.length > 0 &&
+      billsData?.content.length > 0
+      ? true
+      : false;
+  };
 
   return (
     <Container
@@ -52,9 +74,7 @@ const Dashboard = () => {
       className="d-flex align-items-center"
       style={{ backgroundColor: "#1a191c", height: "100%" }}
     >
-      {userData !== null &&
-      clientsData?.content.length > 0 &&
-      billsData?.content.length > 0 ? (
+      {isReadyAndWithoutErrors() ? (
         <Container className="h-75">
           <Row className="flex-column gap-3">
             <Dropdown>
@@ -86,7 +106,7 @@ const Dashboard = () => {
                     Benvenuto {userData.name}!
                   </Card.Title>
                   <Card.Text className="small opacity-75 d-flex gap-4">
-                    Ecco il riepilogo della tua azienda {clientSelected.name}.
+                    Ecco il riepilogo della tua azienda {clientSelected?.name}.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -99,11 +119,11 @@ const Dashboard = () => {
                     <Card.Title>Informazioni Principali</Card.Title>
                     <Card.Text className="d-flex flex-column gap-2">
                       <span className="opacity-75 text-truncate">
-                        Partita iva: {clientSelected.piva}
+                        Partita iva: {clientSelected?.piva}
                       </span>
-                      <span className="opacity-75">{`Tipo: ${clientSelected.ctype}`}</span>
-                      <span className="opacity-75">{`Data inserimento: ${clientSelected.insertDate}`}</span>
-                      <span className="opacity-75">{`Data ultimo contatto: ${clientSelected.lastCall}`}</span>
+                      <span className="opacity-75">{`Tipo: ${clientSelected?.ctype}`}</span>
+                      <span className="opacity-75">{`Data inserimento: ${clientSelected?.insertDate}`}</span>
+                      <span className="opacity-75">{`Data ultimo contatto: ${clientSelected?.lastCall}`}</span>
                     </Card.Text>
                   </Card.Body>
                 </Card>
@@ -128,7 +148,7 @@ const Dashboard = () => {
                     <Card.Title>Informazioni finanziarie</Card.Title>
                     <Card.Text className="d-flex flex-column gap-2">
                       <span className="opacity-75">{`Fatturato annuo: ${formatter.format(
-                        clientSelected.annualTurnOver
+                        clientSelected?.annualTurnOver
                       )}`}</span>
                     </Card.Text>
                   </Card.Body>
@@ -207,7 +227,13 @@ const Dashboard = () => {
             </div>
           </Row>
         </Container>
-      ) : null}
+      ) : !clientsCount ? (
+        <h1 className="text-white mx-auto">
+          non ci sono clients. pagina creazione client
+        </h1>
+      ) : (
+        navigate("/home")
+      )}
     </Container>
   );
 };

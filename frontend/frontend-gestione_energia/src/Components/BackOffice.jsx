@@ -23,7 +23,6 @@ const BackOffice = () => {
   useEffect(() => {
     dispatch(fetchUserRole(token)).then((role) => {
       if (role === "ADMIN") {
-        alert("ciao");
         dispatch(fetchAllUsers(token));
         dispatch(fetchAllClients(token));
       }
