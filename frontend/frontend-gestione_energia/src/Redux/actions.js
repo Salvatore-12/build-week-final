@@ -53,40 +53,52 @@ export const setUserRole = (role) => ({
 
 export const getTokenFromLogin = (email, password) => async (dispatch) => {
   const URL = "http://localhost:3001/auth/login";
-  const response = await fetch(URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      email: email,
-      password: password
-    })
-  });
-  if (response.ok) {
-    const data = await response.json();
-    dispatch(setUserToken(data.token));
-    localStorage.setItem("token", data.token);
-    return data.token;
-  } else {
-    throw new Error("errore");
+  try {
+    const response = await fetch(URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    });
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(setUserToken(data.token));
+      localStorage.setItem("token", data.token);
+      return data.token;
+    } else {
+      throw new Error("errore");
+    }
+  } catch (error) {
+    console.error("errore");
   }
 };
 
 export const fetchUserData = (token) => async (dispatch) => {
   const URL = "http://localhost:3001/users/me";
-  const response = await fetch(URL, {
-    method: "GET",
-    headers: {
-      Authorization: "Bearer " + token,
-      "Content-Type": "application/json"
+  try {
+    const response = await fetch(URL, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json"
+      }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(setUserData(data));
+      console.log(data);
+      return data;
+    } else {
+      if (response.status === 404) {
+        throw new Error(
+          "Sembra esserci un problema con il tuo token. prova ad effettuare nuovamente l'accesso."
+        );
+      }
     }
-  });
-  if (response.ok) {
-    const data = await response.json();
-    dispatch(setUserData(data));
-    console.log(data);
-    return data;
-  } else {
-    throw new Error("errore");
+  } catch (error) {
+    console.error(error);
   }
 };
 
